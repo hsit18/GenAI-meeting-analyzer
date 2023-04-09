@@ -1,14 +1,10 @@
-import {MutualFund} from '../../types/MutualFund';
+import { MutualFund } from '../../types/MutualFund';
+import MutualFundList from '../../components/MutualFundList'
 
 const MutualFundDetails = async () => {
 
     const data: MutualFund[] = await getData();
-    return <div>
-        Search Mutual fund
-        <ul>
-            {data.map((d: MutualFund) => <li key={d.schemeCode}>{d.schemeCode} - {d.schemeName}</li>)}
-        </ul>
-    </div>
+    return <MutualFundList data={data} />
 }
 
 export async function getData() {
