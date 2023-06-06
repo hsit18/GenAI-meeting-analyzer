@@ -1,13 +1,14 @@
 import { MutualFund } from '../../../types/MutualFund';
 import { QParams } from '../../../types/QueryParams';
+import MutualFundSummary from '@/components/MutualFundSummary';
 
-const MutualFundDetails = async ({ params: { id } }: {params: QParams}) => {
+const MutualFundDetails = async ({ params: { id } }: { params: QParams }) => {
 
     const data: MutualFund = await getData(id as string);
-    return <div>
-        Mutual fund Details
-        {data.meta.fund_house}
-    </div>
+    console.log(data);
+    return (
+        <MutualFundSummary data={data} />
+    )
 }
 
 export async function getData(id: string) {
