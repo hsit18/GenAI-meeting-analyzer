@@ -5,7 +5,6 @@ import MutualFundSummary from '@/components/MutualFundSummary';
 const MutualFundDetails = async ({ params: { id } }: { params: QParams }) => {
 
     const data: MutualFund = await getData(id as string);
-    console.log(data);
     return (
         <MutualFundSummary data={data} />
     )

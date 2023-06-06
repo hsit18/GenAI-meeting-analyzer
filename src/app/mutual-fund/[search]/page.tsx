@@ -5,7 +5,6 @@ import { QParams } from '@/types/QueryParams';
 const MutualFunds = async ({ params: { search } }: { params: QParams }) => {
 
     const data: MutualFund[] = await getData(search as string);
-    console.log(data);
     return <MutualFundList data={data} />
 }
 
