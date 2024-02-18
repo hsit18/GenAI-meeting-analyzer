@@ -2,9 +2,9 @@
 
 import { ChatMessage } from "chatgpt";
 
-export const ChatGPTComponent = ({data}: {data: ChatMessage}) => {
+export const ChatGPTComponent = ({data}: {data: string}) => {
     console.log(data);
     return (
-        <div>{data?.text}</div>
+        <div>{data}</div>
     )
 }
