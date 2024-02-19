@@ -1,5 +1,6 @@
 import { MeetingInput } from "@/components/MeetingInput";
 import { chatCompletion } from "@/utils/modelAPI";
+import {run} from "@/utils/chatGPT"
 import { getPrompt } from "@/utils/prompt";
 
 const MeetingPage = async () => {
@@ -10,7 +11,9 @@ const MeetingPage = async () => {
     const agenda = "SQL and its triggers";
     const prompt = getPrompt(question, agenda);
     
-    await getData(prompt);
+    // await getData(prompt);
+
+    await run();
 
     return (
         <MeetingInput />
