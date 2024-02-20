@@ -1,5 +1,6 @@
 import { ChatGPTAPI, ChatMessage } from "chatgpt";
 import OpenAI from "openai";
+import { ChatCompletionMessageParam } from "openai/resources";
 const api = new ChatGPTAPI({
     apiKey: process.env.OPENAI_API_KEY as string,
 });
@@ -12,26 +13,12 @@ export const getMessages = async(message: string) => {
     return res.text;
 }
 
-
-const messages = [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Who won the world series in 2020?' },
-    { role: 'assistant', content: 'The Los Angeles Dodgers won the World Series in 2020.' },
-    { role: 'user', content: 'Who won the world series in 2022?' },
-];
-
 // Function to send a message and get a response
-export async function getChatResponse(messages) {
+export async function getChatResponse(messages: ChatCompletionMessageParam[], instanceId?: string) {
     const response = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
-        messages: messages,
+        messages: messages
     });
     console.log(response);
     return response.choices[0].message.content;
-}
-
-// Run the function to get the assistant's response
-export async function run() {
-    const response = await getChatResponse(messages);
-    console.log(response);
 }

@@ -1,20 +1,15 @@
 import { ChatGPTComponent } from "@/components/ChatGPTComponent";
-import { getMessages } from "@/utils/chatGPT";
-import { chatCompletion } from "@/utils/modelAPI";
-import { getPrompt } from "@/utils/prompt";
+import { getCache } from "@/utils/cacheUtil";
+import { getChatResponse, getMessages } from "@/utils/chatGPT";
 
 const MeetingAnalysis = async () => {
+  console.log(getCache('meeting'));
+  if(!getCache('meeting')) {
+    return <ChatGPTComponent data={"No Data"} />;  
+  }
+  const parsedPrompt = JSON.parse(getCache('meeting') as string);
 
-  const question = `harpreet says: Hi there, welcome
-  ankur says: hi harpreet, lets talk about sql and its triggers
-  harpreet: ok triggeres are xyz
-  jack joined... jack says: lets discussion about assemble`;
-  const agenda = "SQL and its triggers";
-  const prompt = getPrompt(question, agenda);
-
-  //const data: string | undefined = await getMessages(prompt);
-  const data = await chatCompletion(prompt);
-
+  const data = await getChatResponse([...parsedPrompt, {role: 'user', content: 'Provide list of participants joined'}]);
   return <ChatGPTComponent data={data} />;
 };
 

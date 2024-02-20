@@ -40,7 +40,7 @@ export const MeetingInput = () => {
     console.log("Agenda:", agenda);
     console.log("Transcribe File:", transcribeFile);
     // Add code to submit data to server or perform any other action
-    formData.append("otherData", agenda);
+    formData.append("agenda", agenda);
     if (transcribeFile) {
       formData.append("transcribeFile", transcribeFile, transcribeFile.name);
     }
@@ -69,6 +69,7 @@ export const MeetingInput = () => {
             <FormLabel>Meeting Agenda</FormLabel>
             <Input
               type="text"
+              name="agenda"
               placeholder="Enter agenda"
               value={agenda}
               onChange={handleAgendaChange}
