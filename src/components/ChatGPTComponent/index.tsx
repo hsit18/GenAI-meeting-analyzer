@@ -68,14 +68,14 @@ export const ChatGPTComponent = () => {
 
         console.log({
             summary,
-            participants: JSON.parse(participants),
+            participants: JSON.parse(participants || {}).participants,
             percentages: (JSON.parse(percentages) || {}).topics,
         });
         setData({
             ...data,
             summary,
-            participants: JSON.parse(participants),
-            percentages: JSON.parse(percentages).topics,
+            participants: JSON.parse(participants || {}).participants,
+            percentages: JSON.parse(percentages || {}).topics,
         });
         setIsLoading(false);
     };
