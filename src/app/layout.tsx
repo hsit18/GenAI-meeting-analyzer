@@ -2,6 +2,7 @@
 
 import { ChakraProvider } from "@chakra-ui/react"
 import { CacheProvider } from '@chakra-ui/next-js'
+import { init } from "@/utils/cacheUtil";
 
 // export const metadata = {
 //   title: 'Create Next App',

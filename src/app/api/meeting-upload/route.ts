@@ -3,11 +3,11 @@ import { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import { startAnalysisPrompt } from "@/utils/prompt";
-import { getCache, setCache } from "@/utils/cacheUtil";
+import { getCache, init, setCache } from "@/utils/cacheUtil";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     const formData = await request.formData();
-  
+    await init();
     console.log(formData.get('agenda'));
     console.log(formData.get('transcribeFile'));
     const transcribeFile = formData.get('transcribeFile') as Blob;
@@ -38,6 +38,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const msgList = startAnalysisPrompt(formData.get('agenda') as string, buffer.toString());
         await writeFile(`${uploadDir}/${filename}`, JSON.stringify(msgList))
         await setCache('meeting', msgList);
+        await setCache('agenda', formData.get('agenda'));
         const cached = await getCache('meeting');
         return NextResponse.json({ fileUrl: `http://localhost:3000/uploads/${filename}`, meetingCached: cached});
     } catch (e) {

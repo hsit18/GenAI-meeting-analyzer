@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getChatResponse } from "@/utils/chatGPT";
 
-import { getCache } from "@/utils/cacheUtil";
+import { getCache, init } from "@/utils/cacheUtil";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-    
+    await init();
     const data = await request.json();
+
     const parsedPrompt = await getCache('meeting');
     
     if(!parsedPrompt) {

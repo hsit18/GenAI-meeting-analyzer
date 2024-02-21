@@ -38,3 +38,8 @@ export const createAssistant = async (message: string, agenda: string) => {
       });
       return assistant.id;
 }
+
+export const getImages = async() => {
+    const image = await openai.images.generate({ model: "dall-e-2", prompt: "A man on phone with angry mood" });
+    console.log(image.data);
+}

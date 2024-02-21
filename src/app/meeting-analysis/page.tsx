@@ -1,7 +1,10 @@
-import { ChatGPTComponent } from "@/components/ChatGPTComponent";
+import { MeetingAnalysis } from "@/components/MeetingAnalysis";
+import { getCache, init } from "@/utils/cacheUtil";
 
-const MeetingAnalysis = async () => {
-  return <ChatGPTComponent />;
+const MeetingAnalysisPage = async () => {
+  await init();
+  const agenda = await getCache('agenda')
+  return <MeetingAnalysis agenda={agenda}/>;
 };
 
-export default MeetingAnalysis;
+export default MeetingAnalysisPage;

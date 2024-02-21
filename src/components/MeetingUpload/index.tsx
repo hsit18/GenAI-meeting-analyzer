@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+
 import { useRef, useState } from "react";
-import { MdTranscribe } from "react-icons/md";
+import { MdCheck, MdTranscribe } from "react-icons/md";
 
 import {
   Box,
@@ -14,13 +15,17 @@ import {
   Input,
   InputGroup,
   StackDivider,
+  Text,
   VStack,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
-export const MeetingInput = () => {
+export const MeetingUpload = () => {
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [agenda, setAgenda] = useState("");
   const [transcribeFile, setTranscribeFile] = useState<File>();
+  const [submiting, setSubmiting] = useState(false);
 
   const handleAgendaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAgenda(event.target.value);
@@ -35,6 +40,7 @@ export const MeetingInput = () => {
   };
 
   const handleSubmit = async () => {
+    setSubmiting(true);
     const formData = new FormData();
     // Perform actions on form submission
     console.log("Agenda:", agenda);
@@ -49,6 +55,8 @@ export const MeetingInput = () => {
       method: "POST",
       body: formData,
     });
+    setSubmiting(false);
+    router.push('/meeting-analysis')
   };
 
   const handleClick = () => {
@@ -86,10 +94,33 @@ export const MeetingInput = () => {
                 accept=".txt,.doc,.docx"
                 onChange={handleTranscribeFileChange}
               />
-              <Button leftIcon={<Icon as={MdTranscribe} />}>Upload</Button>
+              <Button
+                leftIcon={<Icon as={MdTranscribe} />}
+                rightIcon={
+                  transcribeFile?.name ? (
+                    <Icon
+                      as={MdCheck}
+                      fill={"green"}
+                      fontSize={20}
+                      fontWeight="bold"
+                    />
+                  ) : undefined
+                }
+              >
+                Upload
+              </Button>
+              <Text fontSize="md" m={2} fontStyle="italic">
+                {transcribeFile?.name || ""}
+              </Text>
             </InputGroup>
           </FormControl>
-          <Button colorScheme="blue" onClick={handleSubmit} maxWidth={"300px"}>
+          <Button
+            colorScheme="blue"
+            onClick={handleSubmit}
+            maxWidth={"300px"}
+            isLoading={submiting}
+            loadingText="Submitting"
+          >
             Submit
           </Button>
         </VStack>
