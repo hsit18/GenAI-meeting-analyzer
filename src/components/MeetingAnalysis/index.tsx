@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { PieChart, Pie, Cell, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Label } from "recharts";
 import {
   Tabs,
   TabList,
@@ -29,6 +29,7 @@ import {
   TagLabel,
   Tag,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -135,32 +136,46 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
 
         <TabPanels>
           <TabPanel>
-            <Heading as="h3" size="md" noOfLines={1} my={3}>
-              Summary
-            </Heading>
-            <p>{data?.summary || ""}</p>
+            <HStack>
+              <VStack>
+                <Heading as="h3" size="md" noOfLines={1} my={3}>
+                  Summary
+                </Heading>
+                <Text>{data?.summary || ""}</Text>
+              </VStack>
+              <VStack>
+                <Heading as="h3" size="md" noOfLines={1} my={3}>
+                  Effectiveness
+                </Heading>
+                <PieChart width={800} height={400}>
+                  <Pie
+                    data={[
+                      { name: "Group A", value: 80 },
+                      { name: "Group B", value: 20 },
+                    ]}
+                    cx={420}
+                    cy={200}
+                    startAngle={180}
+                    endAngle={0}
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    <Cell key={`cell-1`} fill="#00C49F" />
+                    <Cell key={`cell-2`} fill="#FF8042" />
+                    <Tooltip />
+                    <Label
+                      value={`${data.effectiveness || 0}%`}
+                      offset={0}
+                      position="center"
+                    />
+                  </Pie>
+                </PieChart>
+              </VStack>
+            </HStack>
 
-            <PieChart width={200} height={100}>
-              <Pie
-                data={[
-                  { name: "Group A", value: 80 },
-                  { name: "Group B", value: 20 },
-                ]}
-                cx={100}
-                cy={80}
-                startAngle={180}
-                endAngle={0}
-                innerRadius={60}
-                outerRadius={80}
-                fill="#8884d8"
-                paddingAngle={5}
-                dataKey="value"
-              >
-                <Cell key={`cell-1`} fill="#00C49F" />
-                <Cell key={`cell-2`} fill="#FF8042" />
-                <Tooltip />
-              </Pie>
-            </PieChart>
             <Heading as="h3" size="md" noOfLines={1} my={3}>
               Topics discussed
             </Heading>
