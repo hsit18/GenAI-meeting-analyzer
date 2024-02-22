@@ -107,7 +107,14 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     return learning;
   }, [data?.percentages]);
 
-  console.log(getLearningTopics);
+  const getEffectivenessData = () => {
+    const value = data.effectiveness || 0;
+    return [
+        { name: "Positive", value: value },
+        { name: "Group B", value: (100 - value) },
+      ]
+  }
+  
   useEffect(() => {
     getAllStats();
   }, []);
@@ -118,7 +125,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
         <Heading as="h2" size="md" mb={2}>
           Analysing meeting using generative AI ....
         </Heading>
-        <SkeletonText mt="4" noOfLines={8} spacing="4" skeletonHeight="2" />
+        <SkeletonText mt="4" noOfLines={10} spacing="4" skeletonHeight="2" />
       </Box>
     );
   }
@@ -147,26 +154,23 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
                 <Heading as="h3" size="md" noOfLines={1} my={3}>
                   Effectiveness
                 </Heading>
-                <PieChart width={800} height={400}>
+                <PieChart width={300} height={180}>
                   <Pie
-                    data={[
-                      { name: "Group A", value: 80 },
-                      { name: "Group B", value: 20 },
-                    ]}
-                    cx={420}
-                    cy={200}
+                    data={getEffectivenessData() || []}
+                    cx={140}
+                    cy={150}
                     startAngle={180}
                     endAngle={0}
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill="#8884d8"
+                    innerRadius={100}
+                    outerRadius={140}
+                    fill="#FF8042"
                     paddingAngle={5}
                     dataKey="value"
                   >
                     <Cell key={`cell-1`} fill="#00C49F" />
                     <Cell key={`cell-2`} fill="#FF8042" />
                     <Tooltip />
-                    <Label
+                    <Label                  
                       value={`${data.effectiveness || 0}%`}
                       offset={0}
                       position="center"
