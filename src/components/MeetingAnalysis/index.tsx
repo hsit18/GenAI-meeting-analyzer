@@ -10,15 +10,12 @@ import {
   TabPanel,
   Stat,
   StatLabel,
-  StatNumber,
   StatHelpText,
   StatArrow,
   StatGroup,
+  SkeletonText,
   Heading,
   Box,
-  SkeletonCircle,
-  Divider,
-  SkeletonText,
   Card,
   CardBody,
   Stack,
@@ -30,9 +27,10 @@ import {
   Tag,
   Text,
   VStack,
+  Divider,
 } from "@chakra-ui/react";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#38812F"];
 
 export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
   const [data, setData] = useState({});
@@ -81,11 +79,11 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     setIsLoading(false);
   };
 
-  const getChartData = (index) => {
-    return Object.keys(data?.percentages[index]?.participants || {}).map(
+  const getChartData = (participants) => {
+    return Object.keys(participants || {}).map(
       (name, index) => ({
         name,
-        value: data?.percentages[index]?.participants[name] || 0,
+        value: participants[name] || 0,
       })
     );
   };
@@ -143,8 +141,8 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
 
         <TabPanels>
           <TabPanel>
-            <HStack>
-              <VStack>
+            <HStack justifyContent="space-between">
+              <VStack maxWidth={"70%"}>
                 <Heading as="h3" size="md" noOfLines={1} my={3}>
                   Summary
                 </Heading>
@@ -233,7 +231,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
                       <Pie
                         dataKey="value"
                         isAnimationActive={false}
-                        data={getChartData([index])}
+                        data={getChartData(topicObj.participants)}
                         cx="50%"
                         cy="50%"
                         innerRadius={60}

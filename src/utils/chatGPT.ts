@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY as string, });
+import fs from "fs";
 
 // Function to send a message and get a response
 export async function getChatResponse(messages: ChatCompletionMessageParam[], formatType?: string) {
@@ -42,4 +43,9 @@ export const createAssistant = async (message: string, agenda: string) => {
 export const getImages = async() => {
     const image = await openai.images.generate({ model: "dall-e-2", prompt: "A man on phone with angry mood" });
     console.log(image.data);
+}
+
+export const getEditImages = async() => {
+  const image = await openai.images.edit({ model: "dall-e-2", prompt: "Sitting at home in a bad mood", image: fs.createReadStream("./avatar.png") });
+  console.log(image.data);
 }
