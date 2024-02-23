@@ -28,9 +28,25 @@ import {
   Text,
   VStack,
   Divider,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
 } from "@chakra-ui/react";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#38812F"];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884d8",
+  "#38812F",
+];
 
 export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
   const [data, setData] = useState({});
@@ -80,12 +96,10 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
   };
 
   const getChartData = (participants) => {
-    return Object.keys(participants || {}).map(
-      (name, index) => ({
-        name,
-        value: participants[name] || 0,
-      })
-    );
+    return Object.keys(participants || {}).map((name, index) => ({
+      name,
+      value: participants[name] || 0,
+    }));
   };
 
   const getTopics = () => {
@@ -108,11 +122,11 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
   const getEffectivenessData = () => {
     const value = data.effectiveness || 0;
     return [
-        { name: "Positive", value: value },
-        { name: "Group B", value: (100 - value) },
-      ]
-  }
-  
+      { name: "Positive", value: value },
+      { name: "Group B", value: 100 - value },
+    ];
+  };
+
   useEffect(() => {
     getAllStats();
   }, []);
@@ -168,7 +182,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
                     <Cell key={`cell-1`} fill="#00C49F" />
                     <Cell key={`cell-2`} fill="#FF8042" />
                     <Tooltip />
-                    <Label                  
+                    <Label
                       value={`${data.effectiveness || 0}%`}
                       offset={0}
                       position="center"
@@ -211,6 +225,51 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
                 </ListItem>
               ))}
             </OrderedList>
+
+            <TableContainer>
+              <Table variant="unstyled">
+                <Thead>
+                  <Tr>
+                    <Th>Topic</Th>
+                    <Th>Ananya Sharma</Th>
+                    <Th>Ravi Deshmukh</Th>
+                    <Th>Neha Singh</Th>
+                    <Th>Sanjay Gupta</Th>
+                    <Th>Rajesh Patel</Th>
+                    <Th>Priya Sharma</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr>
+                    <Td>Large Language Models (LLMs)</Td>
+                    <Td>10%</Td>
+                    <Td>20%</Td>
+                    <Td>10%</Td>
+                    <Td>20%</Td>
+                    <Td>10%</Td>
+                    <Td>20%</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Nano Models Installation on Local Computers</Td>
+                    <Td>10%</Td>
+                    <Td>20%</Td>
+                    <Td>10%</Td>
+                    <Td>20%</Td>
+                    <Td>10%</Td>
+                    <Td>20%</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Cost Implications of LLMs</Td>
+                    <Td>10%</Td>
+                    <Td>20%</Td>
+                    <Td>10%</Td>
+                    <Td>20%</Td>
+                    <Td>10%</Td>
+                    <Td>20%</Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+            </TableContainer>
           </TabPanel>
           <TabPanel>
             {(data?.percentages || []).map((topicObj, index) => (
