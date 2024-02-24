@@ -21,6 +21,8 @@
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "framer-motion": "^10.11.2",
+    "highcharts": "^11.3.0",
+    "highcharts-react-official": "^3.2.1",
     "next": "13.3.0",
     "node-cache": "^5.1.2",
     "node-persist": "^4.0.1",
