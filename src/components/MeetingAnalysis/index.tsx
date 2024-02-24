@@ -79,6 +79,31 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     const effectiveness = await askModel(
       "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}."
     );
+    const response = await askModel(
+      `
+        Can you tell me the percentage on how close each person is from the meeting agenda for each topic discussed?. 
+        Can you analyse meeting transcribe and provide overall effectiveness?
+
+        Respond only in JSON that satisfies the Response type:
+
+        type Response = {
+            topics: Topic[];
+            effectiveness: number;
+            summary: string;
+        };
+
+        type Topic = {
+            name: string;
+            participants: Participant[]
+        }
+
+        type Participant = {
+            name: string,
+            percentage: number
+        }
+      `,
+      "json_object"
+    );
     const percentages = await askModel(
       "Can you tell me the percentage on how close each person is from the meeting agenda for each topic discussed?. Return output in raw JSON like {topics: [{topic: '<TOPIC_NAME>', participants: {'person1': 20, 'person2': 20}}]} ",
       "json_object"
@@ -86,12 +111,14 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
 
     console.log({
       summary,
+      response,
       effectiveness: JSON.parse(effectiveness || {}).effectiveness,
       percentages: (JSON.parse(percentages) || {}).topics,
     });
     setData({
       ...data,
       summary,
+      response,
       effectiveness: JSON.parse(effectiveness || {}).effectiveness,
       percentages: JSON.parse(percentages || {}).topics,
     });
