@@ -37,3 +37,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 
 https://medium.com/@ralfelfving/tutorial-get-started-with-the-new-openai-assistants-api-7049c2517bfe
+
+
+https://chat.openai.com/share/d950344e-a2aa-45db-b240-f6e094a0bf17
