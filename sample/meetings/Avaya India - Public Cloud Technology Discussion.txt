@@ -1,0 +1,66 @@
+Meeting Transcript: Avaya India - Public Cloud Technology Discussion
+
+Date: February 22, 2024
+
+Location: Pune, India
+
+Participants:
+
+Rahul (Host)
+Priya
+Rohan
+Nisha
+Aryan
+Kavita
+Ankit
+Neha
+Vivek
+Sneha
+Agenda Items:
+
+Introduction to Public Cloud Technology
+Benefits and Challenges of Public Cloud Adoption
+Use Cases and Success Stories
+Comparison with Private Cloud Solutions
+Next Steps and Action Items
+Meeting Commencement:
+
+Rahul: Good morning, everyone. Welcome to today's discussion on Public Cloud Technology. We have a packed agenda, so let's get started. First off, let's introduce ourselves briefly.
+
+Introduction to Public Cloud Technology (80% Participation)
+
+Priya: Hi, I'm Priya, a software engineer here at Avaya, specializing in cloud infrastructure.
+
+Rohan: Good morning, I'm Rohan, also working in cloud services. Excited to delve into the public cloud discussion.
+
+Nisha: Hi everyone, I'm Nisha, a data analyst. Looking forward to understanding how public cloud can enhance our analytics capabilities.
+
+Aryan: Hello, I'm Aryan, part of the IT operations team. Interested in learning about the scalability of public cloud solutions.
+
+Kavita: Hi, I'm Kavita, a project manager. I'm particularly keen on exploring cost efficiency in public cloud deployments.
+
+Ankit: Ankit here, a software architect. I see public cloud as a crucial component of our future development strategies.
+
+Neha: Neha, business analyst. Interested in understanding how public cloud can impact our business processes and workflows.
+
+Vivek: Vivek, cybersecurity specialist. Eager to discuss the security considerations of public cloud adoption.
+
+Sneha: Sneha, software tester. Looking forward to understanding how testing practices adapt to the public cloud environment.
+
+Rahul: Thank you, everyone, for the introductions. Let's proceed to our next agenda item.
+
+Benefits and Challenges of Public Cloud Adoption (80% Participation)
+
+Rahul: Now, let's discuss the benefits and challenges of adopting public cloud solutions. Who would like to start?
+
+Sneha: Sorry to interrupt, but while public cloud is fascinating, I wonder how private cloud solutions compare, especially regarding data control and compliance.
+
+Ankit: That's a valid point, Sneha. Private cloud solutions indeed offer greater control over sensitive data and compliance requirements.
+
+Neha: However, they might lack the scalability and cost advantages of public cloud solutions.
+
+Rahul: Sneha, Ankit, Neha, thank you for highlighting the importance of considering private cloud options. Let's continue with our comparison discussion.
+
+Rahul: Unfortunately, we're running out of time. I suggest we continue this discussion in smaller groups to explore specific use cases and action items. We'll reconvene next week to share our findings.
+
+Rahul: Thank you, everyone, for your valuable insights today. Let's keep the momentum going. Have a great day ahead!

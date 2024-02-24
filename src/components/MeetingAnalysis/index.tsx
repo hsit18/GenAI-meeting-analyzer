@@ -106,6 +106,20 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     return (data?.percentages || []).map((topicObj) => topicObj.topic);
   };
 
+  const getParticipants = useMemo(() => {
+    const learning = {};
+    (data?.percentages || []).forEach((topicObj, index) => {
+      learning[topicObj.topic] = topicObj.participants
+      Object.keys(topicObj.participants || {}).forEach((name) => {
+        if (topicObj.participants[name] < 80) {
+          learning[name] = learning[name]?.length ? learning[name] : [];
+          learning[name].push(topicObj.topic);
+        }
+      });
+    });
+    return learning;
+  }, [data?.percentages]);
+
   const getLearningTopics = useMemo(() => {
     const learning = {};
     (data?.percentages || []).forEach((topicObj, index) => {
