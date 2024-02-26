@@ -36,7 +36,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const filename = 'meeting.json'  //`${transcribeFile.name}`;
        // await writeFile(`${uploadDir}/${filename}`, buffer);
         const msgList = startAnalysisPrompt(formData.get('agenda') as string, buffer.toString());
-        await writeFile(`${uploadDir}/${filename}`, JSON.stringify(msgList))
+       // await writeFile(`${uploadDir}/${filename}`, JSON.stringify(msgList))
         await setCache('meeting', msgList);
         await setCache('agenda', formData.get('agenda'));
         const cached = await getCache('meeting');
