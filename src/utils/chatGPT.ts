@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY as string, });

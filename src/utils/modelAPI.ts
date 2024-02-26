@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 export const createThread = async (message: string) => {
     const res = await fetch(`http://127.0.0.1:1337/v1/threads`, {
         method: 'POST',

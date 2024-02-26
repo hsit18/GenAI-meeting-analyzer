@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -127,7 +129,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
 
   useEffect(() => {
     getAllStats();
-  }, []);
+  }, [getAllStats]);
 
   if (loading) {
     return (

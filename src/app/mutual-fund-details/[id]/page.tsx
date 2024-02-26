@@ -10,7 +10,7 @@ const MutualFundDetails = async ({ params: { id } }: { params: QParams }) => {
     )
 }
 
-export async function getData(id: string) {
+async function getData(id: string) {
     const res = await fetch(`https://api.mfapi.in/mf/${id}`)
     return res.json();
 }

@@ -8,7 +8,7 @@ const MutualFunds = async ({ params: { search } }: { params: QParams }) => {
     return <MutualFundList data={data} />
 }
 
-export async function getData(search: string) {
+async function getData(search: string) {
     const res = await fetch(`https://api.mfapi.in/mf/search?q=${search}`)
     return res.json();
 }

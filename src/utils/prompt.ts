@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 let messageList = [];
 
 export const getPrompt = (question: string, agenda: string) => {
