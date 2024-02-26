@@ -7,8 +7,11 @@ import Highcharts from "highcharts";
 import highchartsMore from "highcharts/highcharts-more";
 import solidGauge from "highcharts/modules/solid-gauge";
 
-highchartsMore(Highcharts);
+if (typeof Highcharts === 'object') {
+  highchartsMore(Highcharts);
 solidGauge(Highcharts);
+}
+
 
 export const MeetingEffectiveness = ({ value }: { value: number }) => {
   const chartComponent = useRef(null);
