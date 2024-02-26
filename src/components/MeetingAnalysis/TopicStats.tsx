@@ -3,7 +3,7 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 
 export const TopicStats = ({data, partcipants}) => {
-    const options = useMemo(() => {
+    const options = useMemo<Highcharts.Options>(() => {
         return {
             chart: {
                 type: 'column'

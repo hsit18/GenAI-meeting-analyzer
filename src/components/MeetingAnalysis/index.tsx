@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { PieChart, Pie, Cell, Tooltip, Label } from "recharts";
 import {
   Tabs,
   TabList,
@@ -44,15 +43,7 @@ import {
 } from "@chakra-ui/react";
 import { ArrowDownIcon, ArrowUpIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { TopicStats } from "./TopicStats";
-
-const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#8884d8",
-  "#38812F",
-];
+import { MeetingEffectiveness } from "./Effectiveness";
 
 const CUT_OFF = 40;
 
@@ -60,7 +51,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
   const [data, setData] = useState({});
   const [loading, setIsLoading] = useState(true);
 
-  const askModel = async (query, format = "text") => {
+  const askModel = async (query: string, format = "text") => {
     const res = await fetch(`/api/ask-model`, {
       method: "POST",
       headers: {
@@ -79,6 +70,9 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     const effectiveness = await askModel(
       "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}."
     );
+    const topics = await askModel(
+      "Can you analyse meeting transcribe and provide list of topics discussed with percentage on how close each topic is from meeting agenda. Return output in raw JSON like {topic1: 20, topic2: 50} "
+    );
     const percentages = await askModel(
       "Can you tell me the percentage on how close each person is from the meeting agenda for each topic discussed?. Return output in raw JSON like {topics: [{topic: '<TOPIC_NAME>', participants: {'person1': 20, 'person2': 20}}]} ",
       "json_object"
@@ -86,12 +80,14 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
 
     console.log({
       summary,
+      topics: JSON.parse(topics),
       effectiveness: JSON.parse(effectiveness || {}).effectiveness,
       percentages: (JSON.parse(percentages) || {}).topics,
     });
     setData({
       ...data,
       summary,
+      topics: JSON.parse(topics),
       effectiveness: JSON.parse(effectiveness || {}).effectiveness,
       percentages: JSON.parse(percentages || {}).topics,
     });
@@ -110,7 +106,6 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
   };
 
   const getParticipants = useMemo(() => {
-    const learning = {};
     if (data?.percentages?.length > 0) {
       return Object.keys(data?.percentages[0].participants || [0]);
     }
@@ -130,14 +125,6 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     return learning;
   }, [data?.percentages]);
 
-  const getEffectivenessData = () => {
-    const value = data.effectiveness || 0;
-    return [
-      { name: "Positive", value: value },
-      { name: "Group B", value: 100 - value },
-    ];
-  };
-
   useEffect(() => {
     getAllStats();
   }, []);
@@ -146,7 +133,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     return (
       <Box padding="8" boxShadow="xlg" bg="white">
         <Heading as="h2" size="md" mb={2}>
-          Analysing meeting using generative AI ....
+          Analysing meeting: {agenda}
         </Heading>
         <SkeletonText mt="4" noOfLines={10} spacing="4" skeletonHeight="2" />
       </Box>
@@ -158,6 +145,37 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
       <Heading as="h1" size="xl" mx={2} noOfLines={1} my={3}>
         {agenda}
       </Heading>
+      <StatGroup justifyContent="flex-start">
+        <Stat
+          style={{
+            border: "1px solid #e2e8f0",
+            borderRadius: "10px",
+            textAlign: "center",
+            flexGrow: 0,
+            padding: "16px",
+            margin: "8px 16px",
+            minWidth: "150px",
+          }}
+        >
+          <StatLabel>Participants</StatLabel>
+          <StatNumber>{getParticipants?.length || 0}</StatNumber>
+        </Stat>
+
+        <Stat
+          style={{
+            border: "1px solid #e2e8f0",
+            borderRadius: "10px",
+            textAlign: "center",
+            flexGrow: 0,
+            padding: "16px",
+            margin: "8px 16px",
+            minWidth: "150px",
+          }}
+        >
+          <StatLabel>Topics</StatLabel>
+          <StatNumber>{(data?.percentages || []).length || 0}</StatNumber>
+        </Stat>
+      </StatGroup>
       <Tabs>
         <TabList>
           <Tab>Summary</Tab>
@@ -174,34 +192,57 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
                 <Text>{data?.summary || ""}</Text>
               </VStack>
               <VStack>
-                <Heading as="h3" size="md" noOfLines={1} my={3}>
-                  Effectiveness
-                </Heading>
-                <PieChart width={300} height={180}>
-                  <Pie
-                    data={getEffectivenessData() || []}
-                    cx={140}
-                    cy={150}
-                    startAngle={180}
-                    endAngle={0}
-                    innerRadius={100}
-                    outerRadius={140}
-                    fill="#FF8042"
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    <Cell key={`cell-1`} fill="#00C49F" />
-                    <Cell key={`cell-2`} fill="#FF8042" />
-                    <Tooltip />
-                    <Label
-                      value={`${data.effectiveness || 0}%`}
-                      offset={0}
-                      position="center"
-                    />
-                  </Pie>
-                </PieChart>
+                <MeetingEffectiveness value={data.effectiveness || 0} />
               </VStack>
             </HStack>
+            <Heading as="h3" size="md" noOfLines={1} my={3}>
+              Participants Topic Statistics
+            </Heading>
+            <TableContainer>
+              <Table variant="unstyled">
+                <Thead>
+                  <Tr>
+                    <Th>Topic Discussed</Th>
+                    {(getParticipants || []).map((p) => (
+                      <Th key={p}>
+                        {p}{" "}
+                        <Link
+                          href="https://teams.microsoft.com/l/chat/0/0?users=vermaa@avaya.com"
+                          isExternal
+                        >
+                          <ExternalLinkIcon mx="2px" />
+                        </Link>
+                      </Th>
+                    ))}
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {(data.percentages || []).map((topicObj) => (
+                    <Tr key={topicObj.topic}>
+                      <Td>{topicObj.topic} {data?.topics[topicObj.topic] || 0}%</Td>
+                      {(getParticipants || []).map((p) => (
+                        <Td key={p}>
+                          {(topicObj.participants[p] || 0) < CUT_OFF ? (
+                            <ArrowDownIcon color="red" />
+                          ) : (
+                            <ArrowUpIcon color="green" />
+                          )}
+                          {topicObj.participants[p] || 0}% &nbsp;{" "}
+                          {(topicObj.participants[p] || 0) < CUT_OFF && (
+                            <Link
+                              href={`https://www.linkedin.com/learning/search?keywords=${topicObj.topic}`}
+                              isExternal
+                            >
+                              <ExternalLinkIcon mx="2px" />
+                            </Link>
+                          )}
+                        </Td>
+                      ))}
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
             <Heading as="h3" size="md" noOfLines={1} my={3}>
               Participants need improvements
             </Heading>
@@ -225,38 +266,12 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
                 </ListItem>
               ))}
             </OrderedList>
-
-            <TableContainer>
-              <Table variant="unstyled">
-                <Thead>
-                  <Tr>
-                    <Th>Topic</Th>
-                    {(getParticipants || []).map(p => (
-                      <Th>{p}</Th>
-                    ))}
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {(data.percentages || []).map(topicObj => (
-                    <Tr key={topicObj.topic}>
-                      <Td>{topicObj.topic}</Td>
-                      {(getParticipants || []).map(p => (
-                        <Td key={p}>
-                          {(topicObj.participants[p] || 0) < CUT_OFF ? (<ArrowDownIcon color="red" />) : (<ArrowUpIcon color="green" />)}
-                          {(topicObj.participants[p] || 0)}%
-                          &nbsp; {(topicObj.participants[p] || 0) < CUT_OFF && <Link href='https://linkedin.com' isExternal>
-                            <ExternalLinkIcon mx='2px' />
-                          </Link>}
-                        </Td>
-                      ))}
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
           </TabPanel>
           <TabPanel>
-            <TopicStats data={(data?.percentages || [])} partcipants={getParticipants || []} />
+            <TopicStats
+              data={data?.percentages || []}
+              partcipants={getParticipants || []}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
