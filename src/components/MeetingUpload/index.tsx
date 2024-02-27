@@ -56,7 +56,7 @@ export const MeetingUpload = () => {
       body: formData,
     });
     setSubmiting(false);
-    router.push('/meeting-analysis')
+    router.push('/meeting-details')
   };
 
   const handleClick = () => {

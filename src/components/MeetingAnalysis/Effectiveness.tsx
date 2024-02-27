@@ -19,11 +19,11 @@ export const MeetingEffectiveness = ({ value }: { value: number }) => {
     () => ({
       chart: {
         type: "solidgauge",
-        height: "280px",
+        height: "170px",
       },
-      title: {text: "Effectiveness", align: "center", verticalAlign: "middle", x: 55},
+      title: null,
       pane: {
-        center: ["60%", "55%"],
+        center: ["80%", "50%"],
         size: "100%",
         startAngle: -90,
         endAngle: 90,
@@ -55,13 +55,8 @@ export const MeetingEffectiveness = ({ value }: { value: number }) => {
         lineWidth: 0,
         tickWidth: 0,
         tickAmount: 2,
-        labels: {
-          y: 20,
-          style: {
-            fontSize: "16px",
-            fontWeight: "bold",
-          }
-        },
+        showFirstLabel: false,
+        showLastLabel: false
       },
 
       plotOptions: {
@@ -75,12 +70,11 @@ export const MeetingEffectiveness = ({ value }: { value: number }) => {
       },
       series: [
         {
-          name: "Meeting Effectiveness",
           data: [value] as Array<number>,
           dataLabels: {
             format:
               '<div style="text-align:center">' +
-              '<span style="font-size:25px">{y}%</span><br/>' +
+              '<span style="font-size:20px">Effectiveness: </span><span style="font-size:20px">{y}%</span><br/>' +
               "</div>",
           },
           tooltip: {

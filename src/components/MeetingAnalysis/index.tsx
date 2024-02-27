@@ -46,6 +46,7 @@ import {
 import { ArrowDownIcon, ArrowUpIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { TopicStats } from "./TopicStats";
 import { MeetingEffectiveness } from "./Effectiveness";
+import { TopicChart } from "./TopicChart";
 
 const CUT_OFF = 40;
 
@@ -73,7 +74,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
       "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}."
     );
     const topics = await askModel(
-      "Can you analyse meeting transcribe and provide list of topics discussed with percentage on how close each topic is from meeting agenda. Return output in raw JSON like {topic1: 20, topic2: 50} "
+      "Can you analyse meeting transcribe and provide list of topics discussed with percentage on how close each topic is from meeting agenda. Return output in raw JSON like {topics: {topic1: 20, topic2: 50}} only."
     );
     const percentages = await askModel(
       "Can you tell me the percentage on how close each person is from the meeting agenda for each topic discussed?. Return output in raw JSON like {topics: [{topic: '<TOPIC_NAME>', participants: {'person1': 20, 'person2': 20}}]} ",
@@ -82,14 +83,14 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
 
     console.log({
       summary,
-      topics: JSON.parse(topics),
-      effectiveness: JSON.parse(effectiveness || {}).effectiveness,
-      percentages: (JSON.parse(percentages) || {}).topics,
+      topics: JSON.parse(topics || "").topics,
+      effectiveness: JSON.parse(effectiveness || "").effectiveness,
+      percentages: (JSON.parse(percentages) || "").topics,
     });
     setData({
       ...data,
       summary,
-      topics: JSON.parse(topics),
+      topics: JSON.parse(topics || "").topics,
       effectiveness: JSON.parse(effectiveness || {}).effectiveness,
       percentages: JSON.parse(percentages || {}).topics,
     });
@@ -147,38 +148,62 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
       <Heading as="h1" size="xl" mx={2} noOfLines={1} my={3}>
         {agenda}
       </Heading>
-      <StatGroup justifyContent="flex-start">
-        <Stat
-          style={{
-            border: "1px solid #e2e8f0",
-            borderRadius: "10px",
-            textAlign: "center",
-            flexGrow: 0,
-            padding: "16px",
-            margin: "8px 16px",
-            minWidth: "150px",
-          }}
-        >
-          <StatLabel>Participants</StatLabel>
-          <StatNumber>{getParticipants?.length || 0}</StatNumber>
-        </Stat>
+      <HStack
+        justifyContent="space-between"
+        alignItems="flex-start"
+        height="110px"
+        zIndex={-1}
+      >
+        <StatGroup justifyContent="flex-start">
+          <Stat
+            style={{
+              border: "1px solid #e2e8f0",
+              borderRadius: "10px",
+              textAlign: "center",
+              flexGrow: 0,
+              padding: "16px",
+              margin: "8px 16px",
+              minWidth: "150px",
+            }}
+          >
+            <StatLabel>Participants</StatLabel>
+            <StatNumber>{getParticipants?.length || 0}</StatNumber>
+          </Stat>
 
-        <Stat
-          style={{
-            border: "1px solid #e2e8f0",
-            borderRadius: "10px",
-            textAlign: "center",
-            flexGrow: 0,
-            padding: "16px",
-            margin: "8px 16px",
-            minWidth: "150px",
-          }}
-        >
-          <StatLabel>Topics</StatLabel>
-          <StatNumber>{(data?.percentages || []).length || 0}</StatNumber>
-        </Stat>
-      </StatGroup>
-      <Tabs>
+          <Stat
+            style={{
+              border: "1px solid #e2e8f0",
+              borderRadius: "10px",
+              textAlign: "center",
+              flexGrow: 0,
+              padding: "16px",
+              margin: "8px 16px",
+              minWidth: "150px",
+            }}
+          >
+            <StatLabel>Topics</StatLabel>
+            <StatNumber>{(data?.percentages || []).length || 0}</StatNumber>
+          </Stat>
+
+          <Stat
+            style={{
+              border: "1px solid #e2e8f0",
+              borderRadius: "10px",
+              textAlign: "center",
+              flexGrow: 0,
+              padding: "16px",
+              margin: "8px 16px",
+              minWidth: "150px",
+            }}
+          >
+            <StatLabel>Duration</StatLabel>
+            <StatNumber>{Math.floor(Math.random() * 60) + 1} mins</StatNumber>
+          </Stat>
+        </StatGroup>
+        <MeetingEffectiveness value={data.effectiveness || 0} />
+      </HStack>
+
+      <Tabs zIndex={999}>
         <TabList>
           <Tab>Summary</Tab>
           <Tab>Partcipants Statistics</Tab>
@@ -194,12 +219,49 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
                 <Text>{data?.summary || ""}</Text>
               </VStack>
               <VStack>
-                <MeetingEffectiveness value={data.effectiveness || 0} />
+                <TopicChart topics={data?.topics || {}} />
               </VStack>
             </HStack>
             <Heading as="h3" size="md" noOfLines={1} my={3}>
+              Participants need improvements
+            </Heading>
+            <OrderedList spacing={4}>
+              {Object.keys(getLearningTopics || {}).map((p) => (
+                <ListItem key={p}>
+                  <HStack spacing={4}>
+                    <Text>{p}</Text>
+                    {(getLearningTopics[p] || []).map((topic) => (
+                      <Tag
+                        size="md"
+                        key={topic}
+                        borderRadius="full"
+                        variant="solid"
+                        colorScheme="orange"
+                      >
+                        <TagLabel>
+                          {topic}{" "}
+                          <Link
+                            href={`https://www.linkedin.com/learning/search?keywords=${topic}`}
+                            isExternal
+                          >
+                            <ExternalLinkIcon mx="2px" />
+                          </Link>
+                        </TagLabel>
+                      </Tag>
+                    ))}
+                  </HStack>
+                </ListItem>
+              ))}
+            </OrderedList>
+          </TabPanel>
+          <TabPanel>
+            <Heading as="h3" size="md" noOfLines={1} my={3}>
               Participants Topic Statistics
             </Heading>
+            <TopicStats
+              data={data?.percentages || []}
+              partcipants={getParticipants || []}
+            />
             <TableContainer>
               <Table variant="unstyled">
                 <Thead>
@@ -221,7 +283,9 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
                 <Tbody>
                   {(data.percentages || []).map((topicObj) => (
                     <Tr key={topicObj.topic}>
-                      <Td>{topicObj.topic} {data?.topics[topicObj.topic] || 0}%</Td>
+                      <Td>
+                        {topicObj.topic} {data?.topics[topicObj.topic] || 0}%
+                      </Td>
                       {(getParticipants || []).map((p) => (
                         <Td key={p}>
                           {(topicObj.participants[p] || 0) < CUT_OFF ? (
@@ -245,35 +309,6 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
                 </Tbody>
               </Table>
             </TableContainer>
-            <Heading as="h3" size="md" noOfLines={1} my={3}>
-              Participants need improvements
-            </Heading>
-            <OrderedList spacing={4}>
-              {Object.keys(getLearningTopics || {}).map((p) => (
-                <ListItem key={p}>
-                  <HStack spacing={4}>
-                    <Text>{p}</Text>
-                    {(getLearningTopics[p] || []).map((topic) => (
-                      <Tag
-                        size="md"
-                        key={topic}
-                        borderRadius="full"
-                        variant="solid"
-                        colorScheme="orange"
-                      >
-                        <TagLabel>{topic}</TagLabel>
-                      </Tag>
-                    ))}
-                  </HStack>
-                </ListItem>
-              ))}
-            </OrderedList>
-          </TabPanel>
-          <TabPanel>
-            <TopicStats
-              data={data?.percentages || []}
-              partcipants={getParticipants || []}
-            />
           </TabPanel>
         </TabPanels>
       </Tabs>

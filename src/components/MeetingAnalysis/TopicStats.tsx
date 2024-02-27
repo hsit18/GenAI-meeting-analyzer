@@ -8,7 +8,8 @@ export const TopicStats = ({data, partcipants}) => {
     const options = useMemo<Highcharts.Options>(() => {
         return {
             chart: {
-                type: 'column'
+                type: 'column',
+                height: 300
             },
             title: {
                 text: 'Topic vs Participant Statistics',
@@ -22,6 +23,8 @@ export const TopicStats = ({data, partcipants}) => {
             yAxis: {
                 allowDecimals: false,
                 min: 0,
+                max: 100,
+                tickAmount: 10,
                 title: {
                     text: 'Percentage(%)'
                 }
@@ -31,13 +34,16 @@ export const TopicStats = ({data, partcipants}) => {
                 format: '<b> {series.name}</b> speaks <b>{y}%</b> on {key}'
             },
         
+            
             plotOptions: {
-                column: {
-                    stacking: 'percent',
+                bar: {
+                    borderRadius: '50%',
+                    pointWidth: 6,
                     dataLabels: {
-                        enabled: true,
-                        format: '{point.percentage:.0f}%'
-                    }
+                        enabled: true
+                    },
+                    groupPadding: 0.2,
+                    PointWidth: 5
                 }
             },
             series: partcipants.map(p => {
