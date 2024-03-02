@@ -40,3 +40,5 @@ https://medium.com/@ralfelfving/tutorial-get-started-with-the-new-openai-assista
 
 
 https://chat.openai.com/share/d950344e-a2aa-45db-b240-f6e094a0bf17
+
+https://chat.openai.com/share/7e15538f-07bc-48ae-bef4-fe0134c50390
