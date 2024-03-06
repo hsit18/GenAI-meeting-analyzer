@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import {
   Tabs,
   TabList,
@@ -68,7 +68,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     return await res.json();
   };
 
-  const getAllStats = useCallBack(async () => {
+  const getAllStats = useCallback(async () => {
     const summary = await askModel("Can you summarize the meeting.");
     const effectiveness = await askModel(
       "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}."
