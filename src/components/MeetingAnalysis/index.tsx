@@ -68,7 +68,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     return await res.json();
   };
 
-  const getAllStats = async () => {
+  const getAllStats = useCallBack(async () => {
     const summary = await askModel("Can you summarize the meeting.");
     const effectiveness = await askModel(
       "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}."
@@ -95,7 +95,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
       percentages: JSON.parse(percentages || {}).topics,
     });
     setIsLoading(false);
-  };
+  }, []);
 
   const getChartData = (participants) => {
     return Object.keys(participants || {}).map((name, index) => ({

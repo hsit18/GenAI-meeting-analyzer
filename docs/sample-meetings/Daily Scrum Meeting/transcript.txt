@@ -1,0 +1,36 @@
+Moderator (Rahul): Good morning, everyone. Let's begin our daily scrum meeting. Today, we have updates on MVPs, JIRA, cloud adoption, and generative UI use cases. We'll start with MVPs. Priya, would you like to share your updates from Chennai?
+
+Priya: Good morning, everyone. We've made significant progress on MVP1. User testing is underway, and initial feedback looks promising.
+
+Moderator: Thank you, Priya. Aman, any updates from Delhi regarding JIRA?
+
+Aman: Yes, Rahul. We've resolved most of the critical issues in JIRA. However, there are a few minor bugs that we need to address.
+
+Moderator: Thanks, Aman. Deepa, how's the cloud adoption progressing in Bangalore?
+
+Deepa: Cloud adoption is on track. We've migrated several services to AWS, and the performance has been excellent so far.
+
+Moderator: Great to hear, Deepa. Rajesh, any insights on generative UI use cases?
+
+Rajesh: We've identified some exciting use cases for generative UI in our projects. I'll share the detailed report with the team later today.
+
+Moderator: Excellent. Nisha, Sanjay, any inputs from Delhi and Bangalore respectively?
+
+Nisha: Everything seems aligned with the agenda from our end in Delhi.
+
+Sanjay: Same here in Bangalore, Rahul. All good.
+
+Moderator: Thank you, Nisha and Sanjay. Now, let's briefly touch upon the knowledge transfer session that happened last week regarding Confluence usage. Priya, could you share a quick summary?
+
+Priya: Certainly. We had a productive session on Confluence usage. Teams are adapting well to the new practices.
+
+Moderator: Thank you, Priya. Now, let's steer back to our agenda. Any further comments or questions on MVPs, JIRA, cloud adoption, or generative UI use cases?
+
+
+Moderator: Alright. Before we conclude, does anyone have any pressing topics to discuss?
+
+Rajesh: I'd like to briefly touch upon AR/VR headset related spacial computing. It's an emerging technology that might impact our future projects.
+
+Moderator: Thank you, Rajesh, for bringing that up. We can schedule a separate session to delve deeper into AR/VR technologies.
+
+Moderator: That concludes today's meeting. Thank you, everyone, for your valuable inputs. Let's continue our excellent work. Have a productive day ahead.
