@@ -46,12 +46,14 @@ export const MeetingUpload = () => {
       formData.append("transcribeFile", transcribeFile, transcribeFile.name);
     }
 
-    const res = await fetch("/api/meeting-upload", {
+    const response = await fetch("/api/meeting-upload", {
       method: "POST",
       body: formData,
     });
+    let data: {id: string} = await response.json();
+
     setSubmiting(false);
-    router.push(`/meeting-details/${res.id}`)
+    router.push(`/meeting-details/${data.id}`)
   };
 
   const handleClick = () => {
