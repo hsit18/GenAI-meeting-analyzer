@@ -6,7 +6,10 @@
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "database:studio": "prisma studio",
+    "database:generate": "prisma generate",
+    "push": "prisma db push"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
@@ -14,6 +17,7 @@
     "@chakra-ui/react": "^2.5.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@prisma/client": "^5.10.2",
     "@types/node": "18.15.11",
     "@types/react": "18.0.33",
     "@types/react-dom": "18.0.11",
@@ -27,10 +31,14 @@
     "node-cache": "^5.1.2",
     "node-persist": "^4.0.1",
     "openai": "^4.28.0",
+    "prisma": "^5.10.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^5.0.1",
     "recharts": "^2.12.0",
     "typescript": "5.0.4"
+  },
+  "prisma": {
+    "schema": "src/database/schema.prisma"
   }
 }
