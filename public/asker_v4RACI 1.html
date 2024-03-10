@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RACI Matrix and Chat</title>
+    <style>
+/* Add CSS styles here */
+.duty-manager-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.duty-manager-table th, .duty-manager-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.duty-manager-table th {
+    background-color: #f2f2f2;
+}
+
+.duty-manager-table tr:hover {
+    background-color: #f5f5f5;
+    transition: background-color 0.3s ease;
+}
+
+.online {
+    color: green;
+}
+
+.offline {
+    color: red;
+}
+
+        /* Add your CSS styles here */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .section {
+            width: 45%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+		
+        .section:hover {
+            margin-bottom: 20px;
+            border: 1px solid #aaa;
+			  border-color: blue; /* Change the border color on hover */
+            padding: 5px;
+        }
+
+        .chat-window {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .raci-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .raci-table th, .raci-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .raci-table th {
+            background-color: #f2f2f2;
+        }
+
+        .online {
+            color: green;
+        }
+		tr:hover { 
+   background: #f2f2f2; 
+}
+td a { 
+   display: block; 
+   border: 1px solid black;
+   padding: 16px; 
+}
+
+[data-text*="Jenkins"] {
+    color: blue;
+    font-weight: bold;
+    /* Add any other styles you want */
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section" id="raci-section">
+            <h2>RACI Matrix</h2>
+            <table class="raci-table" id="raci-matrix">
+                <tr>
+                    <th>Chat Text</th>
+                    <th>Responsible</th>
+                    <th>Accountable</th>
+                    <th>Consulted</th>
+                    <th>Informed</th>
+                </tr>
+            </table>
+        </div>
+        <div class="section" id="chat-section">
+            <h2>Chat Window</h2>
+            <div class="chat-window" id="chat-window">
+            </div>
+            <input type="text" id="user-input" placeholder="Try clone, format..." style="width: 100%;">
+			
+			
+			 <script>
+var globalVariable = "format a drive";
+
+
+			 
+			 
+			 
+			 
+    document.addEventListener('DOMContentLoaded', function() {
+      var inputBox = document.getElementById('user-input');
+     
+      inputBox.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+          sendMessage();
+        }
+      });
+    });
+  </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Select the input element
+      var inputElement = document.getElementById('user-input');
+
+      // Focus on the input element
+      inputElement.focus();
+    });
+  </script>
+        </div>
+        <div class="section" id="automation-section">
+            <b>Automation Chat Bot</b>...
+			<style>
+  img {
+    border: 1px solid #555;
+  }
+</style>
+
+			<a onclick="handleClick(this.id)"  id="jenkins"> <img height=25 width=25 src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.6.0/jenkins.svg"/> </a>
+            <a onclick="handleClick(this.id)"  id="bamboo"> <img height=25 width=25 src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.6.0/bamboo.svg"/> </a>
+            <a onclick="handleClick(this.id)"  id="vmware"> <img height=25 width=25 src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.6.0/vmware.svg"/> </a>
+            <a onclick="handleClick(this.id)"  id="powershell" <img height=25 width=25 src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.6.0/powershell.svg"/> </a>
+            <a onclick="handleClick(this.id)"  id="azure"> <img height=25 width=25 src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.6.0/azurepipelines.svg"/> </a>
+            <a onclick="handleClick(this.id)"  id="GCP cloud"> <img height=25 width=25 src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.6.0/google.svg"/> </a>
+            <a onclick="handleClick(this.id)"  id="DOS"> DOS,</a>
+            <a onclick="handleClick(this.id)"  id="AWS"> Aws, </a>
+            <a onclick="handleClick(this.id)" id="Ansible"> Ansible </a>
+            <a onclick="handleClick(this.id)"  id="Linux"> Linux </a>
+            
+			<div id="automation-chat">
+                <!-- Automation responses will be displayed here -->
+            </div>
+        </div>
+		<script>
+		 function handleClick(id) {
+
+		
+		var  apiKey2="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";
+const xhr2 = new XMLHttpRequest();
+xhr2.open("POST", "https://api.openai.com/v1/chat/completions", true);
+xhr2.setRequestHeader("Content-Type", "application/json");
+xhr2.setRequestHeader("Authorization", `Bearer ${apiKey2}`);
+const requestData1 = {
+    model: "gpt-3.5-turbo",
+   "messages": [{"role": "user", "content":"Provide a script in PLATFORM to connect to a "+ globalVariable +""}],
+    temperature:0.7	
+	};
+const jsonData2 = JSON.stringify(requestData1);
+xhr2.onreadystatechange = function () {
+    if (xhr2.readyState === XMLHttpRequest.DONE) {
+        if (xhr2.status === 200) {
+            // Parse and handle the response data
+            const responseData = JSON.parse(xhr2.responseText);
+             var chatWindow = document.getElementById('automation-chat');
+            var message = '<br><img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.6.0/chatbot.svg" width=25px height=25px> ' + responseData.choices[0].message.content + '</div>';
+            chatWindow.innerHTML =message ;
+			
+        } else {
+            // Handle errors
+            console.error('Error:', xhr2.status, xhr2.statusText);
+        }
+    }
+};
+var chatWindow = document.getElementById('automation-chat');
+chatWindow.innerHTML = "connecting to OpenAI ..."+jsonData2 ;
+xhr2.send(jsonData2.replace('PLATFORM',id));
+        }
+
+		</script>
+		
+		
+		
+       <div class="section" id="duty-manager-section">
+    <h5>Duty Manager : 
+	<a id="teamscollab" dlurl="https://teams.microsoft.com/l/chat/0/0?users=pchoubey@avaya.com,nbhawar@avaya.com,chaudhari16@avaya.com,pgosavi@avaya.com&topicName=IncidentTIMESTAMP&message=Helllo%20This%20is%20Ankur,%20need%20your%20help%20on%20this%20issue.%20could%20you%20get%20someone%20assigned%20as%20i%20am%20unable%20to%20reach%20anyone%20in%20the%20RACI"><u>Teams</u> 
+	<script>
+const regex = /TIMESTAMP/g;
+
+		var durl= document.querySelectorAll('#teamscollab');
+
+durl.forEach(function(row) {
+  
+    row.addEventListener('click', function() {
+        var url = this.getAttribute('dlurl');
+      
+		 if (url) {
+		 url = url.replace(regex, function() {
+    const date = new Date();
+    return date.toISOString();
+});          var newTab = window.open(url, '_blank', 'width=1,height=1,resizable=no,scrollbars=no'); // Open link in new tab
+          setTimeout(function(){
+            newTab.close(); // Close the new tab after a delay
+          }, 5999); // 3000 milliseconds = 3 seconds
+        }
+      });
+	  
+});
+
+	</script>
+	 , <a href="https://spaces.avayacloud.com/u/vermaa@avaya.com?videoMode=expanded&videoStart=true" target="_blank"> Spaces </a>
+	 , <a href="https://web.whatsapp.com/send/?phone=919011040572&text=hi1&type=phone_number&app_absent=0" target="_blank"> Whatsapp Contact1 </a>
+	 , <a href="https://web.whatsapp.com/send/?phone=917498755669&text=hi2&type=phone_number&app_absent=0" target="_blank"> Whatsapp Contact2 </a>
+	 , <a href="https://web.whatsapp.com/send/?phone=917420949683&text=hi3&type=phone_number&app_absent=0" target="_blank"> Whatsapp Contact3 </a></h5>
+	
+    <table class="duty-manager-table" id="duty-manager-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Timezone</th>
+                <th>Status</th>
+                <th>Probability</th>
+                <th>Contact Mode</th>
+                <th>LoraWAN</th>
+            </tr>
+        </thead>
+        <tbody id="duty-manager-body">
+            <!-- Duty Manager information will be dynamically added here -->
+            <tr data-url="https://teams.microsoft.com/l/chat/0/0?users=pchoubey@avaya.com">
+                <td>Mr. Prakhar</td>
+                <td>UTC+5:30</td>
+                <td class="online">Online</td>
+                <td>High</td>
+                <td>Teams</td>
+                <td>Good</td>
+            </tr>
+            <tr data-url="https://teams.microsoft.com/l/chat/0/0?users=nbhawar@avaya.com">
+                <td>Mr. Nitin</td>
+                <td>UTC+5:30</td>
+                <td class="online">Online</td>
+                <td>High</td>
+                <td>Teams</td>
+               <td>Good</td>
+  
+ </tr>
+			<tr data-url="https://teams.microsoft.com/l/chat/0/0?users=chaudhari16@avaya.com">
+                <td>Mr. Saurabh</td>
+                <td>UTC+5:30</td>
+                <td class="online">Online</td>
+                <td>High</td>
+                <td>Teams</td>
+                <td>Good</td>
+            </tr>
+			<tr data-url="https://teams.microsoft.com/l/chat/0/0?users=pgosavi@avaya.com">
+                <td>Pravin</td>
+                <td>UTC+5:30</td>
+                <td class="online">Online</td>
+                <td>High</td>
+                <td>Teams</td>
+                <td>Good</td>
+            </tr>
+			
+        </tbody>
+    </table>
+	<script>
+	var allRows = document.querySelectorAll('#duty-manager-table tbody tr');
+
+// Add an event listener to each row
+allRows.forEach(function(row) {
+  
+    row.addEventListener('click', function() {
+        var url = this.getAttribute('data-url');
+      
+		 if (url) {
+          var newTab = window.open(url, '_blank', 'width=1,height=1,resizable=no,scrollbars=no'); // Open link in new tab
+          setTimeout(function(){
+            newTab.close(); // Close the new tab after a delay
+          }, 1099); // 3000 milliseconds = 3 seconds
+        }
+      });
+	  
+});
+
+
+	
+	
+	</script>
+</div>
+
+    </div>
+
+    <script>
+	
+	
+        // Array of random names
+        var names = ["John Smith", "Jane Doe", "David Johnson", "Alice Brown", "Emma White", "Michael Clark", "Olivia Green", "William Lee", "Sophia Patel", "James Taylor", "Emily Wilson", "Daniel Thomas", "Ava Martin", "Matthew Robinson", "Isabella Hall", "Benjamin Hill", "Mia Young", "Joseph King", "Charlotte Turner", "Samuel Adams", "Amelia Lewis", "Alexander Wright", "Harper Hughes", "Davidson Edwards", "Ella Murphy", "Ryan Walker", "Grace Cook", "Daniel Bailey", "Chloe Rogers", "Jacob Scott", "Lily Parker", "Andrew Evans", "Sophie Morris", "Joshua Carter", "Scarlett Bennett", "Noah Phillips", "Aria Foster", "Logan Russell", "Madison Cooper", "Christopher Nelson", "Evelyn Coleman", "Jack Wright", "Victoria Morgan", "Gabriel Kelly", "Zoe Cox", "Ethan Brooks", "Hannah Richardson"];
+
+var avayahandles = [
+  "pgosavi@avaya.com",
+  "pchoubey@avaya.com",
+  "nbhawar@avaya.com",
+  "chaudhari16@avaya.com",
+  "dsouzac@avaya.com",
+  "aneema@avaya.com",
+  "shahs@avaya.com",
+  "harpreets1@avaya.com"
+];
+var avayaHandles1 = [
+  "Gosavi, Pravin (Pravin);pgosavi@avaya.com",
+  "Choubey, Prakhar (Prakhar);pchoubey@avaya.com",
+  "Bhawar, Nitin Mahadeo (Nitin);nbhawar@avaya.com",
+  "Chaudhari, Saurabh (Saurabh);chaudhari16@avaya.com",
+  "DSouza, Cedric Simon (Cedric);dsouzac@avaya.com",
+  "Neema, Anshul (Anshul);aneema@avaya.com",
+  "Shah, Shamik (Shamik);shahs@avaya.com",
+  "Singh, Harpreet (Harpreet Singh);harpreets1@avaya.com",
+  "Ravi, Rajagiri (Rajagiri);rravi@avaya.com",
+  "Anchuri, Vijay Kumar (Vijay);vanchuri@avaya.com",
+  "Lokare, Atul Khandu (Atul);akhandulokar@avaya.com"
+];
+
+var  apiKey="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";
+const xhr = new XMLHttpRequest();
+xhr.open("POST", "https://api.openai.com/v1/chat/completions", true);
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.setRequestHeader("Authorization", `Bearer ${apiKey}`);
+const requestData = {
+    model: "gpt-3.5-turbo",
+    "messages": [{"role": "user", "content":"You are a RACI LLM and has access to all active resourse and duty managers, now welcome me to your RACI LLM Console application with a greeting that consides diversity , equity and inclusion with automation consideration also for speed"}],
+    temperature:0.7	
+	};
+const jsonData = JSON.stringify(requestData);
+
+xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+            // Parse and handle the response data
+            const responseData = JSON.parse(xhr.responseText);
+             var chatWindow = document.getElementById('chat-window');
+            var message = '<img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.6.0/chatbot.svg" width=25px height=25px> ' + responseData.choices[0].message.content + '</div>';
+            chatWindow.innerHTML +=message ;
+			
+        } else {
+            // Handle errors
+            console.error('Error:', xhr.status, xhr.statusText);
+        }
+    }
+};
+
+// Send the request with the JSON payload
+xhr.send(jsonData);
+
+
+
+
+
+
+        // Function to send a message
+        function sendMessage() {
+            var userInput = document.getElementById('user-input').value;
+			globalVariable = userInput;
+            var chatWindow = document.getElementById('chat-window');
+            var message = '<br><div><strong>u:</strong> ' + userInput + '</div>';
+            chatWindow.innerHTML += message;
+
+var  apiKey1="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";
+const xhr1 = new XMLHttpRequest();
+xhr1.open("POST", "https://api.openai.com/v1/chat/completions", true);
+xhr1.setRequestHeader("Content-Type", "application/json");
+xhr1.setRequestHeader("Authorization", `Bearer ${apiKey1}`);
+const requestData1 = {
+    model: "gpt-3.5-turbo",
+   "messages": [{"role": "user", "content":"You have been asked a question " + userInput + " and now respond considering that you are words best lange language model that has prakhar, nitin , saurabh , pravin as a duty manager who are industry leaders and are online to help you to chat on teams . and also shamik, cedric, nitin, ankur as responsible, accountable and can be consulted and or informed as part of RACI matrix to get your job done. also a automation script is provided . when providing response provid line break for html so it can be parsed"}],
+    temperature:0.7	
+	};
+const jsonData1 = JSON.stringify(requestData1);
+xhr1.onreadystatechange = function () {
+    if (xhr1.readyState === XMLHttpRequest.DONE) {
+        if (xhr1.status === 200) {
+            // Parse and handle the response data
+            const responseData = JSON.parse(xhr1.responseText);
+             var chatWindow = document.getElementById('chat-window');
+            var message = '<br><img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.6.0/chatbot.svg" width=25px height=25px> ' + responseData.choices[0].message.content + '</div>';
+            chatWindow.innerHTML +=message ;
+			
+        } else {
+            // Handle errors
+            console.error('Error:', xhr1.status, xhr1.statusText);
+        }
+    }
+};
+xhr1.send(jsonData1);
+
+
+            // Update RACI Matrix with chat text and randomly selected names
+            updateRACIMatrix(userInput);
+
+            // Check if the question can be automated
+            checkAutomation(userInput);
+
+            // Clear input field
+            document.getElementById('user-input').value = '';
+        }
+
+        // Function to update RACI Matrix
+        function updateRACIMatrix(userInput) {
+            var raciMatrix = document.getElementById('raci-matrix');
+     var mydatatosplit=avayaHandles1[Math.floor(Math.random() * avayaHandles1.length)]
+		var Responsible = mydatatosplit.split(";")[0].split(",")[1].split("(")[0];
+		var Responsiblea = mydatatosplit.split(";")[1];
+		var Accountable = avayaHandles1[Math.floor(Math.random() * avayaHandles1.length)].split(";")[0].split(",")[1].split("(")[0];
+		var Accountablea = avayaHandles1[Math.floor(Math.random() * avayaHandles1.length)].split(";")[1];
+		var Consulted = avayaHandles1[Math.floor(Math.random() * avayaHandles1.length)].split(";")[0].split(",")[1].split("(")[0];
+		var Consulteda = avayaHandles1[Math.floor(Math.random() * avayaHandles1.length)].split(";")[1];
+		var Informed = avayaHandles1[Math.floor(Math.random() * avayaHandles1.length)].split(";")[0].split(",")[1].split("(")[0];
+		var Informeda = avayaHandles1[Math.floor(Math.random() * avayaHandles1.length)].split(";")[1];
+			
+            var newRow = '<tr style="border:0px;padding:0"><td style="border:0px">' + userInput + '</td><td><a href="mailto:' + Responsiblea.replace(' ', '').toLowerCase() + '?subject=URGENT_' + userInput + '&body=Hi  ' + Responsible +',  As per RACI you are responsible for the task mention on the email subject, hence need your immediate attention to reach out to me and lets connect on https://spaces.avayacloud.com/u/vermaa@avaya.com?videoMode=expanded&videoStart=true . Alternatively  you can also call or contact me on teams.&cc=' + Accountablea + ';' + Consulteda + ';' + Informeda + '"> ' + Responsible + '</a></td><td><a href="https://teams.microsoft.com/l/chat/0/0?users=' + Accountablea.replace(' ', '').toLowerCase() + '">' + Accountable + '</a></td><td><a href="https://teams.microsoft.com/l/chat/0/0?users=' + Consulteda.replace(' ', '').toLowerCase() + '">' + Consulted + '</a></td><td><a href="https://teams.microsoft.com/l/chat/0/0?users=' + Informeda.replace(' ', '').toLowerCase() + '">' + Informed + '</a></td></tr>';
+            raciMatrix.innerHTML += newRow;
+        }
+
+        // Function to check if the question can be automated
+        function checkAutomation(userInput) {
+            var automationChat = document.getElementById('automation-chat');
+
+            if (userInput.toLowerCase().includes('clone') && userInput.toLowerCase().includes('vm')) {
+                // Display PowerShell script for cloning a VM using vSphere API
+                automationChat.innerHTML = `
+                    <p>To clone a VM using vSphere API and PowerShell:</p>
+                    <pre>
+Add-PSSnapin VMware.VimAutomation.Core
+\$vCenterServer = "your_vCenter_Server"
+\$vCenterUser = "your_vCenter_User"
+\$vCenterPassword = "your_vCenter_Password"
+Connect-VIServer -Server \$vCenterServer -User \$vCenterUser -Password \$vCenterPassword
+
+# Define source and clone VM names
+\$sourceVM = "Name_of_Source_VM"
+\$cloneVM = "Name_of_Clone_VM"
+
+# Get source VM object
+\$vm = Get-VM -Name \$sourceVM
+
+# Create clone VM
+New-VM -VM \$vm -Name \$cloneVM -Location \$vm.VMhost
+
+Disconnect-VIServer -Server \$vCenterServer -Confirm:\$false
+                    </pre>
+                `;
+            } else if (userInput.toLowerCase().includes('format windows drive')) {
+                // Display PowerShell script for formatting a Windows drive
+                automationChat.innerHTML = `
+                    <p>To format a Windows drive using PowerShell:</p>
+                    <pre>
+\$DriveLetter = "C" # Enter the drive letter you want to format
+Format-Volume -DriveLetter \$DriveLetter -FileSystem NTFS -Confirm:\$false
+                    </pre>
+                `;
+            } else {
+                automationChat.innerHTML = "<p>No automation available for this query.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
