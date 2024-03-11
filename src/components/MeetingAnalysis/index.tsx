@@ -50,7 +50,7 @@ import { TopicChart } from "./TopicChart";
 
 const CUT_OFF = 40;
 
-export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
+export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
   const [data, setData] = useState({});
   const [loading, setIsLoading] = useState(true);
 
@@ -63,6 +63,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
       body: JSON.stringify({
         query,
         format,
+        id: meeting.id
       }),
     });
     return await res.json();
@@ -136,7 +137,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
     return (
       <Box padding="8" boxShadow="xlg" bg="white">
         <Heading as="h2" size="md" mb={2}>
-          Analysing meeting: {agenda}
+          Analysing meeting: {meeting.title}
         </Heading>
         <SkeletonText mt="4" noOfLines={10} spacing="4" skeletonHeight="2" />
       </Box>
@@ -146,7 +147,7 @@ export const MeetingAnalysis = ({ agenda }: { agenda: string }) => {
   return (
     <>
       <Heading as="h1" size="xl" mx={2} noOfLines={1} my={3}>
-        {agenda}
+        {meeting.title}
       </Heading>
       <HStack
         justifyContent="space-between"

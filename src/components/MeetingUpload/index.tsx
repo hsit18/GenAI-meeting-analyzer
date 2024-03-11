@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-
 import { useRef, useState } from "react";
 import { MdCheck, MdTranscribe } from "react-icons/md";
 
@@ -42,21 +41,19 @@ export const MeetingUpload = () => {
   const handleSubmit = async () => {
     setSubmiting(true);
     const formData = new FormData();
-    // Perform actions on form submission
-    console.log("Agenda:", agenda);
-    console.log("Transcribe File:", transcribeFile);
-    // Add code to submit data to server or perform any other action
     formData.append("agenda", agenda);
     if (transcribeFile) {
       formData.append("transcribeFile", transcribeFile, transcribeFile.name);
     }
 
-    await fetch("/api/meeting-upload", {
+    const response = await fetch("/api/meeting-upload", {
       method: "POST",
       body: formData,
     });
+    let data: {id: string} = await response.json();
+
     setSubmiting(false);
-    router.push('/meeting-details')
+    router.push(`/meeting-details/${data.id}`)
   };
 
   const handleClick = () => {

@@ -1,51 +1,26 @@
-import { join } from "path";
-
-import { stat, mkdir, writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import { startAnalysisPrompt } from "@/utils/prompt";
-import { getCache, init, setCache } from "@/utils/cacheUtil";
+import prisma from '@/lib/prisma';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-    const formData = await request.formData();
-    await init();
-    console.log(formData.get('agenda'));
-    console.log(formData.get('transcribeFile'));
-    const transcribeFile = formData.get('transcribeFile') as Blob;
-
-    const buffer = Buffer.from(await transcribeFile.arrayBuffer());
-    const uploadDir = join(process.cwd(), "public", "uploads");
-
-    try {
-        await stat(uploadDir);
-    } catch (e: any) {
-        if (e.code === "ENOENT") {
-          await mkdir(uploadDir, { recursive: true });
-        } else {
-          console.error(
-            "Error while trying to create directory when uploading a file\n",
-            e
-          );
-          return NextResponse.json(
-            { error: "Something went wrong." },
-            { status: 500 }
-          );
-        }
-    }
-
-    try {
-        const filename = 'meeting.json'  //`${transcribeFile.name}`;
-       // await writeFile(`${uploadDir}/${filename}`, buffer);
-        const msgList = startAnalysisPrompt(formData.get('agenda') as string, buffer.toString());
-       // await writeFile(`${uploadDir}/${filename}`, JSON.stringify(msgList))
-        await setCache('meeting', msgList);
-        await setCache('agenda', formData.get('agenda'));
-        const cached = await getCache('meeting');
-        return NextResponse.json({ fileUrl: `http://localhost:3000/uploads/${filename}`, meetingCached: cached});
-    } catch (e) {
-        console.error("Error while trying to upload a file\n", e);
-        return NextResponse.json(
-          { error: "Something went wrong." },
-          { status: 500 }
-        );
-    }
+  const formData = await request.formData();
+  const transcribeFile = formData.get('transcribeFile') as Blob;
+  const buffer = Buffer.from(await transcribeFile.arrayBuffer());
+  
+  try {
+    const msgList = startAnalysisPrompt(formData.get('agenda') as string, buffer.toString());
+    const result = await prisma.meeting.create({
+      data: {
+        title: formData.get('agenda') as string,
+        transcribe: JSON.stringify(msgList),
+      },
+    });
+    return NextResponse.json({ status: true, id: result?.id, message: "Meeting created successfully." });
+  } catch (e) {
+    console.error("Error while saving meeting\n", e);
+    return NextResponse.json(
+      { status: false, error: "Something went wrong." },
+      { status: 500 }
+    );
   }
+}

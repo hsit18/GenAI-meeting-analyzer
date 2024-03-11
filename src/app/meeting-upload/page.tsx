@@ -1,8 +1,6 @@
 import { MeetingUpload } from "@/components/MeetingUpload";
-import { init } from "@/utils/cacheUtil";
 
-const MeetingUploadPage = async () => {
-    init();
+const MeetingUploadPage = async () => { 
     return (
         <MeetingUpload />
     )
