@@ -53,7 +53,7 @@ export const MeetingUpload = () => {
     let data: {id: string} = await response.json();
 
     setSubmiting(false);
-    router.push(`/meeting-details/${data.id}`)
+    router.push(`/meeting/${data.id}`)
   };
 
   const handleClick = () => {
