@@ -13,7 +13,7 @@ const MutualFundList = ({ data }: { data: MutualFund[] }) => {
       <CardBody>
         <Stack divider={<StackDivider />} spacing='4'>
           {data.map((d: MutualFund) => <Box key={d.schemeCode}>
-            <Link href={`/mutual-fund-details/${d.schemeCode}`}>
+            <Link href={`/mutualfund/${d.schemeCode}`}>
               <Heading size='xs' textTransform='uppercase'>
                 {d.schemeCode} - {d.schemeName}
               </Heading>

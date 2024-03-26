@@ -13,7 +13,7 @@ const MutualFundHouseList = ({ data }: { data: string[] }) => {
       <CardBody>
         <Stack divider={<StackDivider />} spacing='4'>
           {data.map((d: string) => <Box key={d}>
-            <Link href={`/mutual-fund/${d.toLowerCase().replace('mutual fund', '')}`}>
+            <Link href={`/mutualfund/search/${d.toLowerCase().replace('mutual fund', '')}`}>
               <Heading size='xs' textTransform='uppercase'>
                 {d}
               </Heading>

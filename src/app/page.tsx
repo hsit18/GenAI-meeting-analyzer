@@ -1,12 +1,10 @@
-import MutualFundHouseList from "@/components/MutualFundHouseList";
-import SearchMutualFund from "@/components/SearchMutualFund";
-import { data } from '@/data/fund';
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="flex ">
-      <SearchMutualFund />
-      <MutualFundHouseList data={data} />
+      <Link href="/mutualfund">Mutual Fund</Link>
+      <Link href="/mutualfund">meeting</Link>
     </main>
   )
 }
