@@ -9,7 +9,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { MdUpload } from "react-icons/md";
+import { MdUpload, MdPieChart } from "react-icons/md";
 
 const MeetingPage = async () => {
   const meetings = await prisma.meeting.findMany({});
@@ -28,13 +28,13 @@ const MeetingPage = async () => {
         templateColumns="repeat(auto-fill, minmax(400px, 1fr))"
       >
         {(meetings || []).map((meeting) => (
-          <Card key={meeting.id}>
+          <Card key={meeting.id} background="rgb(218 252 250)">
             <CardHeader>
               <Heading size="md">{meeting.title}</Heading>
             </CardHeader>
-            <CardFooter>
+            <CardFooter justifyContent={"flex-end"}>
               <Link href={`/meeting/${meeting.id}`}>
-                <Button>View Meeting Analysis</Button>
+                <Button colorScheme="teal" rightIcon={<MdPieChart />} variant='outline'>Meeting Analysis</Button>
               </Link>
             </CardFooter>
           </Card>
