@@ -9,7 +9,7 @@
     "lint": "next lint",
     "prebuild": "pnpm database:generate",
     "database:studio": "prisma studio",
-    "database:generate": "prisma generate",
+    "database:generate": "NODE_TLS_REJECT_UNAUTHORIZED=0 prisma generate",
     "push": "prisma db push"
   },
   "dependencies": {

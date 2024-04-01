@@ -15,6 +15,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         transcribe: JSON.stringify(msgList),
       },
     });
+    await prisma.meeting_response.create({
+      data: {
+        meetingId: result.id, 
+      },
+    });
     return NextResponse.json({ status: true, id: result?.id, message: "Meeting created successfully." });
   } catch (e) {
     console.error("Error while saving meeting\n", e);

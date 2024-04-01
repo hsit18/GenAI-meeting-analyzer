@@ -54,7 +54,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
   const [data, setData] = useState({});
   const [loading, setIsLoading] = useState(true);
 
-  const askModel = async (query: string, format = "text") => {
+  const askModel = async (query: string, responseKey, format = "text") => {
     const res = await fetch(`/api/ask-model`, {
       method: "POST",
       headers: {
@@ -63,22 +63,29 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
       body: JSON.stringify({
         query,
         format,
-        id: meeting.id
+        id: meeting.id,
+        responseKey,
       }),
     });
     return await res.json();
   };
 
   const getAllStats = useCallback(async () => {
-    const summary = await askModel("Can you summarize the meeting.");
+    const summary = await askModel(
+      "Can you summarize the meeting.",
+      "response1"
+    );
     const effectiveness = await askModel(
-      "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}."
+      "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}.",
+      "response2"
     );
     const topics = await askModel(
-      "Can you analyse meeting transcribe and provide list of topics discussed with percentage on how close each topic is from meeting agenda. Return output in raw JSON like {topics: {topic1: 20, topic2: 50}} only."
+      "Can you analyse meeting transcribe and provide list of topics discussed with percentage on how close each topic is from meeting agenda. Return output in raw JSON like {topics: {topic1: 20, topic2: 50}} only.",
+      "response3"
     );
     const percentages = await askModel(
       "Can you tell me the percentage on how close each person is from the meeting agenda for each topic discussed?. Return output in raw JSON like {topics: [{topic: '<TOPIC_NAME>', participants: {'person1': 20, 'person2': 20}}]} ",
+      "response4",
       "json_object"
     );
 

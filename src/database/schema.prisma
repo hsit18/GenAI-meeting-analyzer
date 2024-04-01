@@ -13,3 +13,12 @@ model meeting {
   title         String
   transcribe    String? @db.Text
 }
+
+model meeting_response {
+  id           Int    @id @default(autoincrement())
+  meetingId    Int @unique
+  response1    String? @db.Text
+  response2    String? @db.Text
+  response3    String? @db.Text
+  response4    String? @db.Text
+}
