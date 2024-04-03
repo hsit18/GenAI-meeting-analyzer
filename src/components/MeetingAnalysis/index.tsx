@@ -192,7 +192,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
             }}
           >
             <StatLabel>Topics</StatLabel>
-            <StatNumber>{(data?.percentages || []).length || 0}</StatNumber>
+            <StatNumber>{Object.keys(getTopicPercent || {}).length || 0}</StatNumber>
           </Stat>
 
           <Stat
@@ -294,7 +294,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                   {(data.percentages || []).map((topicObj) => (
                     <Tr key={topicObj.topic}>
                       <Td>
-                        {topicObj.topic} {Object.keys(getTopicPercent).length || 0}%
+                        {topicObj.topic} {getTopicPercent ? getTopicPercent[topicObj.topic] : 0}%
                       </Td>
                       {(getParticipants || []).map((p) => (
                         <Td key={p}>
