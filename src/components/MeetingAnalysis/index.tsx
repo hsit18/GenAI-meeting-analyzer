@@ -105,20 +105,23 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
     setIsLoading(false);
   }, []);
 
-  const getChartData = (participants) => {
-    return Object.keys(participants || {}).map((name, index) => ({
-      name,
-      value: participants[name] || 0,
-    }));
-  };
-
-  const getTopics = () => {
-    return (data?.percentages || []).map((topicObj) => topicObj.topic);
-  };
-
   const getParticipants = useMemo(() => {
     if (data?.percentages?.length > 0) {
       return Object.keys(data?.percentages[0].participants || [0]);
+    }
+    return [];
+  }, [data?.percentages]);
+
+  const getTopicPercent = useMemo(() => {
+    if (data?.percentages.length > 0) {
+      const topicStats = {};
+      (data?.percentages || []).forEach(p => {
+        topicStats[p.topic] = Object.values(p.participants).reduce((acc,curr)=>acc+curr,0)        
+      });
+      const totalPercent = Object.values(topicStats).reduce((acc,curr)=>acc+curr,0)
+      return Object.keys(topicStats).map(topic => ({
+        [topic]: Math.round((topicStats[topic]/totalPercent)*100)
+      }));
     }
     return [];
   }, [data?.percentages]);
@@ -227,7 +230,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                 <Text>{data?.summary || ""}</Text>
               </VStack>
               <VStack>
-                <TopicChart topics={data?.topics || {}} />
+                <TopicChart topics={getTopicPercent || {}} />
               </VStack>
             </HStack>
             <Heading as="h3" size="md" noOfLines={1} my={3}>
@@ -292,7 +295,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                   {(data.percentages || []).map((topicObj) => (
                     <Tr key={topicObj.topic}>
                       <Td>
-                        {topicObj.topic} {data?.topics[topicObj.topic] || 0}%
+                        {topicObj.topic} {Object.keys(getTopicPercent).length || 0}%
                       </Td>
                       {(getParticipants || []).map((p) => (
                         <Td key={p}>
