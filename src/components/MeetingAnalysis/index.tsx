@@ -93,7 +93,6 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
     setData({
       ...data,
       summary,
-      topics: JSON.parse(topics || "").topics,
       effectiveness: JSON.parse(effectiveness || {}).effectiveness,
       percentages: JSON.parse(percentages || {}).topics,
     });
