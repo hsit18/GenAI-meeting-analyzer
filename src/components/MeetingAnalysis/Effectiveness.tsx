@@ -1,19 +1,33 @@
 //@ts-nocheck
 
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import highchartsMore from "highcharts/highcharts-more";
 import solidGauge from "highcharts/modules/solid-gauge";
+import { askModel } from "@/utils/apiUtils";
 
-if (typeof Highcharts === 'object') {
+if (typeof Highcharts === "object") {
   highchartsMore(Highcharts);
-solidGauge(Highcharts);
+  solidGauge(Highcharts);
 }
 
+export const MeetingEffectiveness = ({ meetingId }: { meetingId: number }) => {
+  const [value, setValue] = useState(0);
+  const getEffectiveness = async () => {
+    const effectiveness = await askModel(
+      meetingId,
+      "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}.",
+      "response2"
+    );
+    setValue(JSON.parse(effectiveness || "").effectiveness);
+  };
 
-export const MeetingEffectiveness = ({ value }: { value: number }) => {
+  useEffect(() => {
+    getEffectiveness();
+  }, [meetingId]);
+
   const chartComponent = useRef(null);
   const options: Highcharts.Options = useMemo<Highcharts.Options>(
     () => ({
@@ -27,13 +41,15 @@ export const MeetingEffectiveness = ({ value }: { value: number }) => {
         size: "100%",
         startAngle: -90,
         endAngle: 90,
-        background: [{
-          backgroundColor:
-            Highcharts.defaultOptions?.legend?.backgroundColor || "#EEE",
-          innerRadius: "60%",
-          outerRadius: "100%",
-          shape: "arc",
-        }],
+        background: [
+          {
+            backgroundColor:
+              Highcharts.defaultOptions?.legend?.backgroundColor || "#EEE",
+            innerRadius: "60%",
+            outerRadius: "100%",
+            shape: "arc",
+          },
+        ],
       },
 
       exporting: {
@@ -56,7 +72,7 @@ export const MeetingEffectiveness = ({ value }: { value: number }) => {
         tickWidth: 0,
         tickAmount: 2,
         showFirstLabel: false,
-        showLastLabel: false
+        showLastLabel: false,
       },
 
       plotOptions: {

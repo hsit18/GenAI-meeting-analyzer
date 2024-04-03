@@ -42,11 +42,14 @@ import {
   Container,
   SimpleGrid,
   Link,
+  Spinner,
 } from "@chakra-ui/react";
 import { ArrowDownIcon, ArrowUpIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { TopicStats } from "./TopicStats";
 import { MeetingEffectiveness } from "./Effectiveness";
 import { TopicChart } from "./TopicChart";
+import { Summary } from "./components/Summary";
+import { askModel } from "@/utils/apiUtils";
 
 const CUT_OFF = 40;
 
@@ -54,46 +57,19 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
   const [data, setData] = useState({});
   const [loading, setIsLoading] = useState(true);
 
-  const askModel = async (query: string, responseKey, format = "text") => {
-    const res = await fetch(`/api/ask-model`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query,
-        format,
-        id: meeting.id,
-        responseKey,
-      }),
-    });
-    return await res.json();
-  };
-
   const getAllStats = useCallback(async () => {
-    const summary = await askModel(
-      "Can you summarize the meeting.",
-      "response1"
-    );
-    const effectiveness = await askModel(
-      "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}.",
-      "response2"
-    );
     const percentages = await askModel(
+      meeting.id,
       "Can you tell me the percentage on how close each person is from the meeting agenda for each topic discussed?. Return output in raw JSON like {topics: [{topic: '<TOPIC_NAME>', participants: {'person1': 20, 'person2': 20}}]} ",
       "response4",
       "json_object"
     );
 
     console.log({
-      summary,
-      effectiveness: JSON.parse(effectiveness || "").effectiveness,
       percentages: (JSON.parse(percentages) || "").topics,
     });
     setData({
-      ...data,
-      summary,
-      effectiveness: JSON.parse(effectiveness || {}).effectiveness,
+      ...data, 
       percentages: JSON.parse(percentages || {}).topics,
     });
     setIsLoading(false);
@@ -101,7 +77,11 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
 
   const getParticipants = useMemo(() => {
     if (data?.percentages?.length > 0) {
-      return Object.keys(data?.percentages[0].participants || [0]);
+      let participantNames = [];
+      (data?.percentages || []).forEach((obj) => {
+        participantNames = participantNames.concat(Object.keys(obj.participants || {}));
+      });
+      return [...new Set(participantNames)];
     }
     return [];
   }, [data?.percentages]);
@@ -118,34 +98,24 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
     }
     return {};
   }, [data?.percentages]);
-
+  
   const getLearningTopics = useMemo(() => {
     const learning = {};
+    const participants = getParticipants || [];
     (data?.percentages || []).forEach((topicObj, index) => {
-      Object.keys(topicObj.participants || {}).forEach((name) => {
-        if (topicObj.participants[name] < CUT_OFF) {
+      (participants || []).forEach((name) => {
+        if ((topicObj.participants[name] || 0) < CUT_OFF) {
           learning[name] = learning[name]?.length ? learning[name] : [];
           learning[name].push(topicObj.topic);
         }
       });
     });
     return learning;
-  }, [data?.percentages]);
-
+  }, [data?.percentages, getParticipants]);
   useEffect(() => {
     getAllStats();
   }, [getAllStats]);
 
-  if (loading) {
-    return (
-      <Box padding="8" boxShadow="xlg" bg="white">
-        <Heading as="h2" size="md" mb={2}>
-          Analysing meeting: {meeting.title}
-        </Heading>
-        <SkeletonText mt="4" noOfLines={10} spacing="4" skeletonHeight="2" />
-      </Box>
-    );
-  }
 
   return (
     <>
@@ -171,7 +141,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
             }}
           >
             <StatLabel>Participants</StatLabel>
-            <StatNumber>{getParticipants?.length || 0}</StatNumber>
+            <StatNumber>{loading ? <Spinner /> : (getParticipants?.length || 0)}</StatNumber>
           </Stat>
 
           <Stat
@@ -186,7 +156,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
             }}
           >
             <StatLabel>Topics</StatLabel>
-            <StatNumber>{Object.keys(getTopicPercent || {}).length || 0}</StatNumber>
+            <StatNumber>{loading ? <Spinner /> : (Object.keys(getTopicPercent || {}).length || 0)}</StatNumber>
           </Stat>
 
           <Stat
@@ -201,10 +171,10 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
             }}
           >
             <StatLabel>Duration</StatLabel>
-            <StatNumber>{Math.floor(Math.random() * 60) + 1} mins</StatNumber>
+            <StatNumber>{loading ? <Spinner /> : `${(Math.floor(Math.random() * 60) + 1)} mins`}</StatNumber>
           </Stat>
         </StatGroup>
-        <MeetingEffectiveness value={data.effectiveness || 0} />
+        <MeetingEffectiveness meetingId={meeting.id} />
       </HStack>
 
       <Tabs zIndex={999}>
@@ -216,11 +186,11 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
         <TabPanels>
           <TabPanel>
             <HStack justifyContent="space-between" alignItems="flex-start">
-              <VStack maxWidth={"70%"} alignItems="flex-start">
+              <VStack maxWidth={"70%"} alignItems="flex-start" flex={1}>
                 <Heading as="h3" size="md" noOfLines={1} my={3}>
                   Summary
                 </Heading>
-                <Text>{data?.summary || ""}</Text>
+                <Summary meetingId={meeting.id} />
               </VStack>
               <VStack>
                 <TopicChart topics={getTopicPercent || {}} />
