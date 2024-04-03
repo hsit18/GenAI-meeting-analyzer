@@ -119,11 +119,10 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
         topicStats[p.topic] = Object.values(p.participants).reduce((acc,curr)=>acc+curr,0)        
       });
       const totalPercent = Object.values(topicStats).reduce((acc,curr)=>acc+curr,0)
-      return Object.keys(topicStats).map(topic => ({
-        [topic]: Math.round((topicStats[topic]/totalPercent)*100)
-      }));
+      Object.keys(topicStats).forEach(t=>topicStats[t] = Math.round((topicStats[t]/totalPercent)*100));
+      return topicStats;
     }
-    return [];
+    return {};
   }, [data?.percentages]);
 
   const getLearningTopics = useMemo(() => {
