@@ -113,7 +113,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
   }, [data?.percentages]);
 
   const getTopicPercent = useMemo(() => {
-    if (data?.percentages.length > 0) {
+    if (data?.percentages?.length > 0) {
       const topicStats = {};
       (data?.percentages || []).forEach(p => {
         topicStats[p.topic] = Object.values(p.participants).reduce((acc,curr)=>acc+curr,0)        
