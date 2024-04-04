@@ -208,16 +208,13 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
       <Tabs zIndex={999}>
         <TabList>
           <Tab>Summary</Tab>
-          <Tab>Partcipants Statistics</Tab>
+          <Tab>Participants Statistics</Tab>
         </TabList>
 
         <TabPanels>
           <TabPanel>
             <HStack justifyContent="space-between" alignItems="flex-start">
-              <VStack maxWidth={"70%"} alignItems="flex-start" flex={1}>
-                <Heading as="h3" size="md" noOfLines={1} my={3}>
-                  Summary
-                </Heading>
+              <VStack maxWidth={"60%"} alignItems="flex-start" flex={1}>
                 <Summary meetingId={meeting.id} />
               </VStack>
               <VStack>
@@ -231,15 +228,16 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
               {Object.keys(getLearningTopics || {}).map((p) => (
                 <ListItem key={p}>
                   <HStack spacing={4} alignItems={"flex-start"}>
-                    <VStack>
-                      <Text>{p}</Text>
+                    <HStack>
+                      <Text fontWeight="bold" minWidth="160px">{p}</Text>
                       <HStack justifyContent={"flex-start"} width="100%">
+                        <Text>(</Text>
                         <Link
                           href={`mailto:vermaa@avaya.com?subject=You need to improvement on topics&body=Hi, \n you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
                           isExternal
                         >
                           <GrMailOption
-                            size={24}
+                            size={20}
                             color="#4285F4"
                             style={{
                               display: "inline",
@@ -252,7 +250,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                           isExternal
                         >
                           <SiWhatsapp
-                            size={24}
+                            size={20}
                             color="#25D366"
                             style={{
                               display: "inline",
@@ -265,7 +263,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                           isExternal
                         >
                           <SiMicrosoftteams
-                            size={24}
+                            size={20}
                             color="#4E5FBF"
                             style={{
                               display: "inline",
@@ -273,8 +271,9 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                             }}
                           />
                         </Link>
+                        <Text>)</Text>
                       </HStack>
-                    </VStack>
+                    </HStack>
                     {(getLearningTopics[p] || []).map((topic) => (
                       <Tag
                         size="md"
@@ -348,7 +347,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                     <Tr key={topicObj.topic}>
                       <Td>
                         {topicObj.topic}{" "}
-                        {getTopicPercent ? getTopicPercent[topicObj.topic] : 0}%
+                        <b>({getTopicPercent ? getTopicPercent[topicObj.topic] : 0}%)</b>
                       </Td>
                       {(getParticipants || []).map((p) => (
                         <Td key={p}>

@@ -17,14 +17,15 @@ export const Summary = ({ meetingId }: {meetingId: number}) => {
     setSummaryData(summary)
     setLoading(false);
   };
+  
   useEffect(() => {
     getSummary();
-  });
+  }, []);
 
   if (loading) {
     return (
-      <Box padding="" boxShadow="xlg" bg="white">
-        <SkeletonText mt="4" noOfLines={6} spacing="4" skeletonHeight="2" />
+      <Box padding="4" boxShadow="xlg" bg="white" width="100%">
+        <SkeletonText mt="4" noOfLines={10} spacing="4" skeletonHeight="2" />
       </Box>
     );
   }

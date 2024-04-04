@@ -25,6 +25,8 @@ export const TopicStats = ({data, partcipants}) => {
                 min: 0,
                 max: 100,
                 tickAmount: 10,
+                alignTicks: false,
+                endOnTick: false,
                 title: {
                     text: 'Percentage(%)'
                 }
