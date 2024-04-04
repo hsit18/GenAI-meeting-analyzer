@@ -21,10 +21,9 @@ export const TopicStats = ({data, partcipants}) => {
             },
         
             yAxis: {
-                allowDecimals: false,
-                min: 0,
+                min: 10,
                 max: 100,
-                tickAmount: 10,
+                tickAmount: 5,
                 alignTicks: false,
                 endOnTick: false,
                 title: {
