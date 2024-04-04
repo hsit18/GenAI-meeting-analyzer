@@ -309,9 +309,6 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
             </OrderedList>
           </TabPanel>
           <TabPanel>
-            <Heading as="h3" size="md" noOfLines={1} my={3}>
-              Participants Topic Statistics
-            </Heading>
             <TopicStats
               data={data?.percentages || []}
               partcipants={getParticipants || []}

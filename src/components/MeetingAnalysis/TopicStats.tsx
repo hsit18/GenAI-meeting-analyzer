@@ -53,7 +53,10 @@ export const TopicStats = ({data, partcipants}) => {
                     name: p,
                     data: (data || []).map(topicObj => topicObj.participants[p] || 0)
                 }
-            })
+            }),
+            credits: {
+                enabled: false
+            },
         };
     }, [data, partcipants]);
 
