@@ -50,6 +50,10 @@ import { MeetingEffectiveness } from "./Effectiveness";
 import { TopicChart } from "./TopicChart";
 import { Summary } from "./components/Summary";
 import { askModel } from "@/utils/apiUtils";
+import { SiMicrosoftteams } from "react-icons/si";
+import { IoLogoLinkedin } from "react-icons/io";
+import { GrMailOption } from "react-icons/gr";
+import { SiWhatsapp } from "react-icons/si";
 
 const CUT_OFF = 40;
 
@@ -69,7 +73,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
       percentages: (JSON.parse(percentages) || "").topics,
     });
     setData({
-      ...data, 
+      ...data,
       percentages: JSON.parse(percentages || {}).topics,
     });
     setIsLoading(false);
@@ -79,7 +83,9 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
     if (data?.percentages?.length > 0) {
       let participantNames = [];
       (data?.percentages || []).forEach((obj) => {
-        participantNames = participantNames.concat(Object.keys(obj.participants || {}));
+        participantNames = participantNames.concat(
+          Object.keys(obj.participants || {})
+        );
       });
       return [...new Set(participantNames)];
     }
@@ -89,16 +95,25 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
   const getTopicPercent = useMemo(() => {
     if (data?.percentages?.length > 0) {
       const topicStats = {};
-      (data?.percentages || []).forEach(p => {
-        topicStats[p.topic] = Object.values(p.participants).reduce((acc,curr)=>acc+curr,0)        
+      (data?.percentages || []).forEach((p) => {
+        topicStats[p.topic] = Object.values(p.participants).reduce(
+          (acc, curr) => acc + curr,
+          0
+        );
       });
-      const totalPercent = Object.values(topicStats).reduce((acc,curr)=>acc+curr,0)
-      Object.keys(topicStats).forEach(t=>topicStats[t] = Math.round((topicStats[t]/totalPercent)*100));
+      const totalPercent = Object.values(topicStats).reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
+      Object.keys(topicStats).forEach(
+        (t) =>
+          (topicStats[t] = Math.round((topicStats[t] / totalPercent) * 100))
+      );
       return topicStats;
     }
     return {};
   }, [data?.percentages]);
-  
+
   const getLearningTopics = useMemo(() => {
     const learning = {};
     const participants = getParticipants || [];
@@ -115,7 +130,6 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
   useEffect(() => {
     getAllStats();
   }, [getAllStats]);
-
 
   return (
     <>
@@ -141,7 +155,9 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
             }}
           >
             <StatLabel>Participants</StatLabel>
-            <StatNumber>{loading ? <Spinner /> : (getParticipants?.length || 0)}</StatNumber>
+            <StatNumber>
+              {loading ? <Spinner /> : getParticipants?.length || 0}
+            </StatNumber>
           </Stat>
 
           <Stat
@@ -156,7 +172,13 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
             }}
           >
             <StatLabel>Topics</StatLabel>
-            <StatNumber>{loading ? <Spinner /> : (Object.keys(getTopicPercent || {}).length || 0)}</StatNumber>
+            <StatNumber>
+              {loading ? (
+                <Spinner />
+              ) : (
+                Object.keys(getTopicPercent || {}).length || 0
+              )}
+            </StatNumber>
           </Stat>
 
           <Stat
@@ -171,7 +193,13 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
             }}
           >
             <StatLabel>Duration</StatLabel>
-            <StatNumber>{loading ? <Spinner /> : `${(Math.floor(Math.random() * 60) + 1)} mins`}</StatNumber>
+            <StatNumber>
+              {loading ? (
+                <Spinner />
+              ) : (
+                `${Math.floor(Math.random() * 60) + 1} mins`
+              )}
+            </StatNumber>
           </Stat>
         </StatGroup>
         <MeetingEffectiveness meetingId={meeting.id} />
@@ -202,15 +230,60 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
             <OrderedList spacing={4}>
               {Object.keys(getLearningTopics || {}).map((p) => (
                 <ListItem key={p}>
-                  <HStack spacing={4}>
-                    <Text>{p}</Text>
+                  <HStack spacing={4} alignItems={"flex-start"}>
+                    <VStack>
+                      <Text>{p}</Text>
+                      <HStack justifyContent={"flex-start"} width="100%">
+                        <Link
+                          href={`mailto:vermaa@avaya.com?subject=You need to improvement on topics&body=Hi, \n you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
+                          isExternal
+                        >
+                          <GrMailOption
+                            size={24}
+                            color="#4285F4"
+                            style={{
+                              display: "inline",
+                              verticalAlign: "bottom",
+                            }}
+                          />
+                        </Link>
+                        <Link
+                          href={`https://web.whatsapp.com/send/?phone=919011040572&text=Hi you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}&type=phone_number&app_absent=0`}
+                          isExternal
+                        >
+                          <SiWhatsapp
+                            size={24}
+                            color="#25D366"
+                            style={{
+                              display: "inline",
+                              verticalAlign: "bottom",
+                            }}
+                          />
+                        </Link>
+                        <Link
+                          href={`https://teams.microsoft.com/l/chat/0/0?users=vermaa@avaya.com&topicName=You need to improvement on topics&message=Hi you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
+                          isExternal
+                        >
+                          <SiMicrosoftteams
+                            size={24}
+                            color="#4E5FBF"
+                            style={{
+                              display: "inline",
+                              verticalAlign: "bottom",
+                            }}
+                          />
+                        </Link>
+                      </HStack>
+                    </VStack>
                     {(getLearningTopics[p] || []).map((topic) => (
                       <Tag
                         size="md"
                         key={topic}
                         borderRadius="full"
                         variant="solid"
-                        colorScheme="orange"
+                        color="black"
+                        backgroundColor="#f5e2d6"
+                        border="2px solid orange"
                       >
                         <TagLabel>
                           {topic}{" "}
@@ -218,7 +291,15 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                             href={`https://www.linkedin.com/learning/search?keywords=${topic}`}
                             isExternal
                           >
-                            <ExternalLinkIcon mx="2px" />
+                            <IoLogoLinkedin
+                              size={16}
+                              color="#4E5FBF"
+                              style={{
+                                display: "inline",
+                                verticalAlign: "bottom",
+                              }}
+                              mx="2px"
+                            />
                           </Link>
                         </TagLabel>
                       </Tag>
@@ -243,12 +324,20 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                     <Th>Topic Discussed</Th>
                     {(getParticipants || []).map((p) => (
                       <Th key={p}>
-                        {p}{" "}
+                        {p}
+                        {"   "}
                         <Link
                           href="https://teams.microsoft.com/l/chat/0/0?users=vermaa@avaya.com"
                           isExternal
                         >
-                          <ExternalLinkIcon mx="2px" />
+                          <SiMicrosoftteams
+                            size={16}
+                            color="#4E5FBF"
+                            style={{
+                              display: "inline",
+                              verticalAlign: "bottom",
+                            }}
+                          />
                         </Link>
                       </Th>
                     ))}
@@ -258,7 +347,8 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                   {(data.percentages || []).map((topicObj) => (
                     <Tr key={topicObj.topic}>
                       <Td>
-                        {topicObj.topic} {getTopicPercent ? getTopicPercent[topicObj.topic] : 0}%
+                        {topicObj.topic}{" "}
+                        {getTopicPercent ? getTopicPercent[topicObj.topic] : 0}%
                       </Td>
                       {(getParticipants || []).map((p) => (
                         <Td key={p}>
@@ -273,7 +363,15 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                               href={`https://www.linkedin.com/learning/search?keywords=${topicObj.topic}`}
                               isExternal
                             >
-                              <ExternalLinkIcon mx="2px" />
+                              <IoLogoLinkedin
+                                mx="2px"
+                                size={16}
+                                color="#0077B5"
+                                style={{
+                                  display: "inline",
+                                  verticalAlign: "bottom",
+                                }}
+                              />
                             </Link>
                           )}
                         </Td>
