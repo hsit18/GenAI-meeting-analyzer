@@ -18,10 +18,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         where: {meetingId: Number(data.id)}
     });
     
-    if (meetingResponse && meetingResponse[data.responseKey as keyof typeof meetingResponse]) {
-        console.log(`Cached Meeting found for meeting Id: ${meetingResponse.meetingId} for reponseKey: ${data.responseKey}`);
-        return NextResponse.json(meetingResponse[data.responseKey as keyof typeof meetingResponse]);
-    }
+    // if (meetingResponse && meetingResponse[data.responseKey as keyof typeof meetingResponse]) {
+    //     console.log(`Cached Meeting found for meeting Id: ${meetingResponse.meetingId} for reponseKey: ${data.responseKey}`);
+    //     return NextResponse.json(meetingResponse[data.responseKey as keyof typeof meetingResponse]);
+    // }
    
     const result = await getChatResponse([...JSON.parse(meeting.transcribe), { role: 'user', content: data.query }], data.format);
 

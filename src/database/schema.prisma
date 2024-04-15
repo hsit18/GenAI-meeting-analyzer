@@ -11,6 +11,7 @@ datasource db {
 model meeting {
   id            Int    @id @default(autoincrement())
   title         String
+  duration      Int @default(0)
   transcribe    String? @db.Text
 }
 

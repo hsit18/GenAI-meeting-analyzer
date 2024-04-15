@@ -54,6 +54,7 @@ import { SiMicrosoftteams } from "react-icons/si";
 import { IoLogoLinkedin } from "react-icons/io";
 import { GrMailOption } from "react-icons/gr";
 import { SiWhatsapp } from "react-icons/si";
+import { StatBox } from "../shared/StatBox";
 
 const CUT_OFF = 40;
 
@@ -134,7 +135,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
   return (
     <>
       <Heading as="h1" size="xl" mx={2} noOfLines={1} my={3}>
-        {meeting.title}
+        Agenda: {meeting.title}
       </Heading>
       <HStack
         justifyContent="space-between"
@@ -143,64 +144,9 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
         zIndex={-1}
       >
         <StatGroup justifyContent="flex-start">
-          <Stat
-            style={{
-              border: "1px solid #e2e8f0",
-              borderRadius: "10px",
-              textAlign: "center",
-              flexGrow: 0,
-              padding: "16px",
-              margin: "8px 16px",
-              minWidth: "150px",
-            }}
-          >
-            <StatLabel>Participants</StatLabel>
-            <StatNumber>
-              {loading ? <Spinner /> : getParticipants?.length || 0}
-            </StatNumber>
-          </Stat>
-
-          <Stat
-            style={{
-              border: "1px solid #e2e8f0",
-              borderRadius: "10px",
-              textAlign: "center",
-              flexGrow: 0,
-              padding: "16px",
-              margin: "8px 16px",
-              minWidth: "150px",
-            }}
-          >
-            <StatLabel>Topics</StatLabel>
-            <StatNumber>
-              {loading ? (
-                <Spinner />
-              ) : (
-                Object.keys(getTopicPercent || {}).length || 0
-              )}
-            </StatNumber>
-          </Stat>
-
-          <Stat
-            style={{
-              border: "1px solid #e2e8f0",
-              borderRadius: "10px",
-              textAlign: "center",
-              flexGrow: 0,
-              padding: "16px",
-              margin: "8px 16px",
-              minWidth: "150px",
-            }}
-          >
-            <StatLabel>Duration</StatLabel>
-            <StatNumber>
-              {loading ? (
-                <Spinner />
-              ) : (
-                `${Math.floor(Math.random() * 60) + 1} mins`
-              )}
-            </StatNumber>
-          </Stat>
+          <StatBox loading={loading} label="Participants" value={getParticipants?.length || 0} />
+          <StatBox loading={loading} label="Topics" value={Object.keys(getTopicPercent || {}).length || 0} />
+          <StatBox loading={loading} label="Duration" value={`${meeting.duration || 0} mins`} />
         </StatGroup>
         <MeetingEffectiveness meetingId={meeting.id} />
       </HStack>
@@ -208,7 +154,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
       <Tabs zIndex={999}>
         <TabList>
           <Tab>Summary</Tab>
-          <Tab>Participants Statistics</Tab>
+          <Tab>Participants</Tab>
         </TabList>
 
         <TabPanels>

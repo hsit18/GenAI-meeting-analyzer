@@ -12,6 +12,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const result = await prisma.meeting.create({
       data: {
         title: formData.get('agenda') as string,
+        duration: Math.floor(Math.random() * 60) + 1,
         transcribe: JSON.stringify(msgList),
       },
     });
