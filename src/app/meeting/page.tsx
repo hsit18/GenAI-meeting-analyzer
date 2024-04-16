@@ -9,6 +9,7 @@ import {
   Heading,
   Button,
   Flex,
+  CardBody,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { MdUpload, MdPieChart } from "react-icons/md";
@@ -20,6 +21,13 @@ const MeetingPage = async () => {
     (acc, curr) => acc + (JSON.parse(curr.response2 || "").effectiveness || 0),
     0
   );
+  const getEffectiveness = (meetingId: number) => {
+    if(!meetingResponses?.length) return 0;
+    const obj = meetingResponses.find((response) => response.meetingId === meetingId);
+    if(!obj) return 0;
+    return JSON.parse(obj?.response2 || "").effectiveness || 0;
+  };
+
   return (
     <Flex padding={4} direction="column" overflow="auto" height="100%">
       <Flex justifyContent={"space-between"} padding={4}>
@@ -32,7 +40,9 @@ const MeetingPage = async () => {
       </Flex>
       <Flex justifyContent={"space-between"} padding={4} height="150px">
         <StatBox loading={false} label="Total Meetings" value={meetings.length} />
-        <MeterGauge value={totalEffectiveness / meetingResponses.length || 0} />
+        <div style={{alignSelf: "start"}}>
+        <MeterGauge value={parseInt((totalEffectiveness / meetingResponses.length || 0).toString(), 10)} />
+        </div>
       </Flex>
       <SimpleGrid
         flex={1}
@@ -42,22 +52,16 @@ const MeetingPage = async () => {
         templateColumns="repeat(auto-fill, minmax(400px, 1fr))"
       >
         {(meetings || []).map((meeting) => (
-          <Card key={meeting.id} background="rgb(218 252 250)" maxHeight="200px">
-            <CardHeader flex={1}>
+          <Link key={meeting.id} href={`/meeting/${meeting.id}`}>
+          <Card background="rgb(218 252 250)" height="220px">
+            <CardHeader>
               <Heading size="md">{meeting.title}</Heading>
             </CardHeader>
-            <CardFooter justifyContent={"flex-end"}>
-              <Link href={`/meeting/${meeting.id}`}>
-                <Button
-                  colorScheme="teal"
-                  rightIcon={<MdPieChart />}
-                  variant="outline"
-                >
-                  Analysis
-                </Button>
-              </Link>
-            </CardFooter>
+            <CardBody padding={0} height="100px">
+              <MeterGauge value={getEffectiveness(meeting.id)} size="60%" />
+            </CardBody>
           </Card>
+          </Link>
         ))}
       </SimpleGrid>
     </Flex>

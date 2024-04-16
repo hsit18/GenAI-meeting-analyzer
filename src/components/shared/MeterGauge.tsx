@@ -12,18 +12,19 @@ if (typeof Highcharts === "object") {
     solidGauge(Highcharts);
 }
 
-export const MeterGauge = ({value}: {value: number}) => {
+export const MeterGauge = ({value, size}: {value: number; size?: string}) => {
     const chartComponent = useRef(null);
     const options: Highcharts.Options = useMemo<Highcharts.Options>(
       () => ({
         chart: {
           type: "solidgauge",
           height: "170px",
+          backgroundColor:"none"
         },
         title: null,
         pane: {
           center: ["80%", "50%"],
-          size: "100%",
+          size: size || "100%",
           startAngle: -90,
           endAngle: 90,
           background: [
@@ -75,7 +76,7 @@ export const MeterGauge = ({value}: {value: number}) => {
             dataLabels: {
               format:
                 '<div style="text-align:center">' +
-                '<span style="font-size:20px">Effectiveness: </span><span style="font-size:20px">{y}%</span><br/>' +
+                '<span style="font-size:16px">Effectiveness: </span><span style="font-size:18px">{y}%</span><br/>' +
                 "</div>",
             },
             tooltip: {
