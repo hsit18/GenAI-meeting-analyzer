@@ -38,7 +38,7 @@ const MeetingPage = async () => {
           </Button>
         </Link>
       </Flex>
-      <Flex justifyContent={"space-between"} padding={4} height="150px">
+      <Flex justifyContent={"space-between"} padding={4} height="110px">
         <StatBox loading={false} label="Total Meetings" value={meetings.length} />
         <div style={{alignSelf: "start"}}>
         <MeterGauge value={parseInt((totalEffectiveness / meetingResponses.length || 0).toString(), 10)} />

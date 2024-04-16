@@ -18,7 +18,7 @@ export const MeterGauge = ({value, size}: {value: number; size?: string}) => {
       () => ({
         chart: {
           type: "solidgauge",
-          height: "170px",
+          height: "30%",
           backgroundColor:"none"
         },
         title: null,
