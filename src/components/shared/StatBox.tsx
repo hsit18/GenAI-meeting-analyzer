@@ -17,6 +17,7 @@ export const StatBox = ({ loading, label, value }: {loading: boolean; label: str
         padding: "16px",
         margin: "8px 16px",
         minWidth: "150px",
+        minHeight: "100px",
       }}
     >
       <StatLabel>{label}</StatLabel>

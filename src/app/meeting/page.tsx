@@ -41,20 +41,22 @@ const MeetingPage = async () => {
       <Flex justifyContent={"space-between"} padding={4} height="210px">
         <StatBox loading={false} label="Total Meetings" value={meetings.length} />
         <div style={{alignSelf: "start"}}>
-        <MeterGauge value={parseInt((totalEffectiveness / meetingResponses.length || 0).toString(), 10)} />
+          <MeterGauge value={parseInt((totalEffectiveness / meetingResponses.length || 0).toString(), 10)} />
         </div>
       </Flex>
       <SimpleGrid
         flex={1}
         overflow={"auto"}
-        padding={6}
+        padding={4}
         spacing={4}
+        marginTop="24px"
+        alignContent="flex-start"
         templateColumns="repeat(auto-fill, minmax(400px, 1fr))"
       >
         {(meetings || []).map((meeting) => (
           <Link key={meeting.id} href={`/meeting/${meeting.id}`}>
-          <Card background="rgb(218 252 250)" height="220px">
-            <CardHeader>
+          <Card background="rgb(218 252 250)" height="220px" padding={2}>
+            <CardHeader padding={2} flex={1}>
               <Heading size="md">{meeting.title}</Heading>
             </CardHeader>
             <CardBody padding={0} height="100px">
