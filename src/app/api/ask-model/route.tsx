@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getChatResponse } from "@/utils/chatGPT";
+import { getChatResponse } from "@/utils/grokAPI";
 import prisma from '@/lib/prisma';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -25,12 +25,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
    
     const result = await getChatResponse([...JSON.parse(meeting.transcribe), { role: 'user', content: data.query }], data.format);
 
-    if (meetingResponse?.id) {
-        await prisma.meeting_response.update({
-            where: { id: Number(meetingResponse?.id) },
-            data: { [data.responseKey]: result, meetingId: Number(data.id) }
-        });
-        console.log(`Meeting response cached for meeting Id: ${meetingResponse.meetingId} for reponseKey: ${data.responseKey}`);
-    }
+    // if (meetingResponse?.id) {
+    //     await prisma.meeting_response.update({
+    //         where: { id: Number(meetingResponse?.id) },
+    //         data: { [data.responseKey]: result, meetingId: Number(data.id) }
+    //     });
+    //     console.log(`Meeting response cached for meeting Id: ${meetingResponse.meetingId} for reponseKey: ${data.responseKey}`);
+    // }
     return NextResponse.json(result);
 }
