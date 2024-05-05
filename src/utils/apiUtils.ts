@@ -1,4 +1,4 @@
-export const askModel = async (meetingId: number, query: string, responseKey: string, format = "text") => {
+export const askModel = async (meetingId: number, query: string, responseKey: string, format: string) => {
   const res = await fetch(`/api/ask-model`, {
     method: "POST",
     headers: {

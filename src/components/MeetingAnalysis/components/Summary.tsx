@@ -3,6 +3,7 @@
 import { askModel } from "@/utils/apiUtils";
 import { useEffect, useState } from "react";
 import { Box, Heading, SkeletonText, Text } from "@chakra-ui/react";
+import Markdown from 'react-markdown';
 
 export const Summary = ({ meetingId }: {meetingId: number}) => {
   const [loading, setLoading] = useState(true);
@@ -12,7 +13,8 @@ export const Summary = ({ meetingId }: {meetingId: number}) => {
     const summary = await askModel(
       meetingId,
       "Can you summarize the meeting.",
-      "response1"
+      "response1",
+      ""
     );
     setSummaryData(summary)
     setLoading(false);
@@ -29,5 +31,5 @@ export const Summary = ({ meetingId }: {meetingId: number}) => {
       </Box>
     );
   }
-  return <Text>{summaryData || ""}</Text>;
+  return <div style={{paddingLeft: "24px"}}><Markdown>{summaryData || ""}</Markdown></div>;
 };

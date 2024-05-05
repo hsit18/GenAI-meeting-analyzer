@@ -12,7 +12,8 @@ export const MeetingEffectiveness = ({ meetingId }: { meetingId: number }) => {
     const effectiveness = await askModel(
       meetingId,
       "Can you analyse meeting transcribe and provide overall effectiveness only in raw JSON like {effectiveness: 50}.",
-      "response2"
+      "response2",
+      "json_object"
     );
     setValue(JSON.parse(effectiveness || "").effectiveness);
   };

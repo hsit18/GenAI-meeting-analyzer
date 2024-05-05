@@ -1,5 +1,4 @@
 import Groq from 'groq-sdk';
-import { CompletionCreateParams } from 'groq-sdk/resources/chat';
 
 const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY,
@@ -12,9 +11,9 @@ export async function getChatResponse(messages: Groq.Chat.CompletionCreateParams
     model: "llama3-70b-8192",
     temperature: 0.3,
     stream: false,
-    response_format: {
+    response_format: formatType ? {
         "type": "json_object"
-    }
+    }: {}
   });   
   console.log(chatCompletion.choices[0].message.content);
 
