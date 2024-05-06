@@ -13,8 +13,10 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { MdUpload, MdPieChart } from "react-icons/md";
+import { getEmbeddings, getChatResponse } from "@/utils/ollamaAPI";
 
 const MeetingPage = async () => {
+  getChatResponse();
   const meetings = await prisma.meeting.findMany({});
   const meetingResponses = await prisma.meeting_response.findMany({});
   const totalEffectiveness = meetingResponses.reduce(
