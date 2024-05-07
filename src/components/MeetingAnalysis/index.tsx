@@ -179,7 +179,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                       <HStack justifyContent={"flex-start"} width="100%">
                         <Text>(</Text>
                         <Link
-                          href={`mailto:vermaa@avaya.com?subject=You need to improvement on topics&body=Hi, \n you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
+                          href={`mailto:akhandulokar@avaya.com?subject=You need to improvement on topics&body=Hi, \n you need improvement on topic ${(getLearningTopics[p] || []).join(", ")}`}
                           isExternal
                         >
                           <GrMailOption
@@ -192,7 +192,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                           />
                         </Link>
                         <Link
-                          href={`https://web.whatsapp.com/send/?phone=919011040572&text=Hi you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}&type=phone_number&app_absent=0`}
+                          href={`https://web.whatsapp.com/send/?phone=919011040572&text=Hi you need improvement on topic ${(getLearningTopics[p] || []).join(", ")}&type=phone_number&app_absent=0`}
                           isExternal
                         >
                           <SiWhatsapp
@@ -205,7 +205,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                           />
                         </Link>
                         <Link
-                          href={`https://teams.microsoft.com/l/chat/0/0?users=vermaa@avaya.com&topicName=You need to improvement on topics&message=Hi you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
+                          href={`https://teams.microsoft.com/l/chat/0/0?users=akhandulokar@avaya.com&topicName=You%20need%20to%20improvement%20on%20topics&message=Hi%20you%20need%20improvement%20on%20topic%20${(getLearningTopics[p] || []).join(",%20")}`}
                           isExternal
                         >
                           <SiMicrosoftteams
@@ -269,7 +269,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                         {p}
                         {"   "}
                         <Link
-                          href="https://teams.microsoft.com/l/chat/0/0?users=vermaa@avaya.com"
+                          href="https://teams.microsoft.com/l/chat/0/0?users=akhandulokar@avaya.com"
                           isExternal
                         >
                           <SiMicrosoftteams
