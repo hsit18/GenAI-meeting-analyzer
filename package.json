@@ -13,6 +13,7 @@
     "push": "prisma db push"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^0.0.9",
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/next-js": "^2.1.2",
     "@chakra-ui/react": "^2.5.5",
@@ -22,6 +23,7 @@
     "@types/node": "18.15.11",
     "@types/react": "18.0.33",
     "@types/react-dom": "18.0.11",
+    "ai": "^3.1.2",
     "chatgpt": "^5.2.5",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
@@ -34,7 +36,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^5.0.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "zod": "^3.23.7"
   },
   "prisma": {
     "schema": "src/database/schema.prisma"
