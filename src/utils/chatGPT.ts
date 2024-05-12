@@ -6,9 +6,15 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY as string, });
 import fs from "fs";
 
 // Function to send a message and get a response
-export async function getChatResponse(messages: ChatCompletionMessageParam[], formatType?: string) {
+export async function getChatResponse(model, messages: ChatCompletionMessageParam[], formatType?: string) {
+  console.log("API Request   ", JSON.stringify({
+    model: model,
+    response_format: { type: formatType || "text" },
+    messages: messages,
+    temperature: 0.2,
+}));
     const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo-0125',
+        model: model,
         response_format: { type: formatType || "text" },
         messages: messages,
         temperature: 0.2,

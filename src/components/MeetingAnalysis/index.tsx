@@ -9,18 +9,8 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Stat,
-  StatLabel,
-  StatHelpText,
-  StatArrow,
   StatGroup,
-  SkeletonText,
   Heading,
-  Box,
-  Card,
-  CardBody,
-  Stack,
-  CardHeader,
   OrderedList,
   ListItem,
   HStack,
@@ -28,23 +18,16 @@ import {
   Tag,
   Text,
   VStack,
-  Divider,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
-  StatNumber,
-  Container,
-  SimpleGrid,
-  Link,
-  Spinner,
+  Link
 } from "@chakra-ui/react";
-import { ArrowDownIcon, ArrowUpIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 import { TopicStats } from "./TopicStats";
 import { MeetingEffectiveness } from "./Effectiveness";
 import { TopicChart } from "./TopicChart";
@@ -55,19 +38,25 @@ import { IoLogoLinkedin } from "react-icons/io";
 import { GrMailOption } from "react-icons/gr";
 import { SiWhatsapp } from "react-icons/si";
 import { StatBox } from "../shared/StatBox";
+import { ModelSelector } from "./components/ModelSelector";
+import { GPT_MODELS } from "@/constants";
 
 const CUT_OFF = 40;
 
 export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
   const [data, setData] = useState({});
   const [loading, setIsLoading] = useState(true);
+  const [selectedModel, setSelectedModel] = useState(GPT_MODELS[0]);
 
   const getAllStats = useCallback(async () => {
     const percentages = await askModel(
-      meeting.id,
-      "Can you tell me the percentage on how close each person is from the meeting agenda for each topic discussed?. Return output in raw JSON like {topics: [{topic: '<TOPIC_NAME>', participants: {'person1': 20, 'person2': 20}}]} ",
-      "response4",
-      "json_object"
+      {
+        id: meeting.id,
+        model: selectedModel,
+        query: "Can you tell me the percentage on how close each person is from the meeting agenda for each topic discussed?. Return output in raw JSON like {topics: [{topic: '<TOPIC_NAME>', participants: {'person1': 20, 'person2': 20}}]} ",
+        responseKey: "response4",
+        format: "json_object"
+      }
     );
 
     console.log({
@@ -78,7 +67,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
       percentages: JSON.parse(percentages || {}).topics,
     });
     setIsLoading(false);
-  }, []);
+  }, [selectedModel]);
 
   const getParticipants = useMemo(() => {
     if (data?.percentages?.length > 0) {
@@ -129,14 +118,26 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
     return learning;
   }, [data?.percentages, getParticipants]);
   useEffect(() => {
+    setIsLoading(true);
+    setData({});
     getAllStats();
-  }, [getAllStats]);
+  }, [getAllStats, selectedModel]);
 
   return (
     <>
-      <Heading as="h1" size="xl" mx={2} noOfLines={1} my={3}>
-        Agenda: {meeting.title}
-      </Heading>
+      <HStack
+        justifyContent="space-between"
+        alignItems="flex-start"
+        zIndex={-1}
+        mx={2}
+        my={3}
+      >
+        <Heading as="h1" size="md" noOfLines={1}>
+          {meeting.title}
+        </Heading>
+        <ModelSelector selected={selectedModel} onChange={setSelectedModel} />
+      </HStack>
+
       <HStack
         justifyContent="space-between"
         alignItems="flex-start"
@@ -148,7 +149,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
           <StatBox loading={loading} label="Topics" value={Object.keys(getTopicPercent || {}).length || 0} />
           <StatBox loading={loading} label="Duration" value={`${meeting.duration || 0} mins`} />
         </StatGroup>
-        <MeetingEffectiveness meetingId={meeting.id} />
+        <MeetingEffectiveness meetingId={meeting.id} model={selectedModel} />
       </HStack>
 
       <Tabs zIndex={999}>
@@ -161,7 +162,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
           <TabPanel>
             <HStack justifyContent="space-between" alignItems="flex-start">
               <VStack maxWidth={"60%"} alignItems="flex-start" flex={1}>
-                <Summary meetingId={meeting.id} />
+                <Summary meetingId={meeting.id} model={selectedModel} />
               </VStack>
               <VStack>
                 <TopicChart topics={getTopicPercent || {}} />
@@ -179,7 +180,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                       <HStack justifyContent={"flex-start"} width="100%">
                         <Text>(</Text>
                         <Link
-                          href={`mailto:vermaa@avaya.com?subject=You need to improvement on topics&body=Hi, \n you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
+                          href={`mailto:akhandulokar@avaya.com?subject=You need to improvement on topics&body=Hi, \n you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
                           isExternal
                         >
                           <GrMailOption
@@ -205,7 +206,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                           />
                         </Link>
                         <Link
-                          href={`https://teams.microsoft.com/l/chat/0/0?users=vermaa@avaya.com&topicName=You need to improvement on topics&message=Hi you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
+                          href={`https://teams.microsoft.com/l/chat/0/0?users=akhandulokar@avaya.com&topicName=You need to improvement on topics&message=Hi you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
                           isExternal
                         >
                           <SiMicrosoftteams
@@ -269,7 +270,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                         {p}
                         {"   "}
                         <Link
-                          href="https://teams.microsoft.com/l/chat/0/0?users=vermaa@avaya.com"
+                          href="https://teams.microsoft.com/l/chat/0/0?users=akhandulokar@avaya.com"
                           isExternal
                         >
                           <SiMicrosoftteams
