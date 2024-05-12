@@ -179,7 +179,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                       <HStack justifyContent={"flex-start"} width="100%">
                         <Text>(</Text>
                         <Link
-                          href={`mailto:vermaa@avaya.com?subject=You need to improvement on topics&body=Hi, \n you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
+                          href={`mailto:akhandulokar@avaya.com?subject=You need to improvement on topics&body=Hi, \n you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
                           isExternal
                         >
                           <GrMailOption
@@ -205,7 +205,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                           />
                         </Link>
                         <Link
-                          href={`https://teams.microsoft.com/l/chat/0/0?users=vermaa@avaya.com&topicName=You need to improvement on topics&message=Hi you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
+                          href={`https://teams.microsoft.com/l/chat/0/0?users=akhandulokar@avaya.com&topicName=You need to improvement on topics&message=Hi you need improvement on these topics ${(getLearningTopics[p] || []).join(", ")}`}
                           isExternal
                         >
                           <SiMicrosoftteams
@@ -269,7 +269,7 @@ export const MeetingAnalysis = ({ meeting }: { meeting: any }) => {
                         {p}
                         {"   "}
                         <Link
-                          href="https://teams.microsoft.com/l/chat/0/0?users=vermaa@avaya.com"
+                          href="https://teams.microsoft.com/l/chat/0/0?users=akhandulokar@avaya.com"
                           isExternal
                         >
                           <SiMicrosoftteams
