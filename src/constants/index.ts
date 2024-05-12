@@ -10,5 +10,5 @@ export const OLLAMA_MODELS = [
 ]
 
 export const GROQ_MODELS = [
-    'lamma3'
+    'llama3-70b-8192'
 ]
