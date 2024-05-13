@@ -26,6 +26,7 @@
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "framer-motion": "^10.11.2",
+    "groq-sdk": "^0.3.3",
     "highcharts": "^11.3.0",
     "highcharts-react-official": "^3.2.1",
     "next": "14.1.1",

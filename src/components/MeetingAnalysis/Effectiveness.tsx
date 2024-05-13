@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 import React, { useEffect, useState } from "react";
 
 import { askModel } from "@/utils/apiUtils";

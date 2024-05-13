@@ -2,7 +2,7 @@
 
 import { askModel } from "@/utils/apiUtils";
 import { useEffect, useState } from "react";
-import { Box, Heading, SkeletonText, Text } from "@chakra-ui/react";
+import { Box, SkeletonText } from "@chakra-ui/react";
 import Markdown from 'react-markdown';
 
 export const Summary = ({ meetingId, model }: { meetingId: number, model: string }) => {
