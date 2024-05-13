@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -36,7 +36,8 @@
     "react-dom": "18.2.0",
     "react-icons": "^5.0.1",
     "react-markdown": "^9.0.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "winston": "^3.13.0"
   },
   "prisma": {
     "schema": "src/database/schema.prisma"

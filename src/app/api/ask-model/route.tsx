@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getChatResponse } from "@/utils/chatGPT";
 import prisma from '@/lib/prisma';
 import { GPT_MODELS } from "@/constants";
 import { resolveModel } from "@/AIModels";
+import { logger } from "@/utils/logger";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const selectedModel = request.headers.get('ai-model') || GPT_MODELS[0];
     const data = await request.json();
+    
+    logger.info(`Askmodel requested model ${selectedModel}`);
 
     const meeting = await prisma.meeting.findUnique({
         where: { id: Number(data.id) }
