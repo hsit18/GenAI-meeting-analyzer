@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getChatResponse } from "@/utils/chatGPT";
 import prisma from '@/lib/prisma';
 import { GPT_MODELS } from "@/constants";
+import { resolveModel } from "@/AIModels";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
 
@@ -25,20 +26,29 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     //     return NextResponse.json(meetingResponse[data.responseKey as keyof typeof meetingResponse]);
     // }
 
-    const result = await getChatResponse({
-        model: selectedModel,
-        response_format: { type: data?.format || "text" },
-        messages: [...JSON.parse(meeting.transcribe), { role: 'user', content: data.query }],
-        temperature: 0.2,
-        stream: false
-    });
+    const resolvedChatResponse = await resolveModel(selectedModel);
 
-    // if (meetingResponse?.id) {
-    //     await prisma.meeting_response.update({
-    //         where: { id: Number(meetingResponse?.id) },
-    //         data: { [data.responseKey]: result, meetingId: Number(data.id) }
-    //     });
-    //     console.log(`Meeting response cached for meeting Id: ${meetingResponse.meetingId} for reponseKey: ${data.responseKey}`);
-    // }
-    return NextResponse.json(result);
+    if (resolvedChatResponse) {
+        const result = await resolvedChatResponse({
+            model: selectedModel,
+            response_format: { type: data?.format || "text" },
+            messages: [...JSON.parse(meeting.transcribe), { role: 'user', content: data.query }],
+            temperature: 0.2,
+            stream: false
+        });
+        // if (meetingResponse?.id) {
+        //     await prisma.meeting_response.update({
+        //         where: { id: Number(meetingResponse?.id) },
+        //         data: { [data.responseKey]: result, meetingId: Number(data.id) }
+        //     });
+        //     console.log(`Meeting response cached for meeting Id: ${meetingResponse.meetingId} for reponseKey: ${data.responseKey}`);
+        // }
+        return NextResponse.json(result);
+    } else {
+        return NextResponse.json({ error: `Unsupported Model provided ${selectedModel}` }, { status: 400 });
+    }
+
+
+
+
 }
