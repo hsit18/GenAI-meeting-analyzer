@@ -18,13 +18,13 @@ const MeetingPage = async () => {
   const meetings = await prisma.meeting.findMany({});
   const meetingResponses = await prisma.meeting_response.findMany({});
   const totalEffectiveness = meetingResponses.reduce(
-    (acc, curr) => acc + (JSON.parse(curr.response2 || "").effectiveness || 0),
+    (acc, curr) => acc + (curr?.response2 && JSON.parse(curr?.response2 || "").effectiveness || 0),
     0
   );
   const getEffectiveness = (meetingId: number) => {
     if(!meetingResponses?.length) return 0;
     const obj = meetingResponses.find((response) => response.meetingId === meetingId);
-    if(!obj) return 0;
+    if(!obj?.response2) return 0;
     return JSON.parse(obj?.response2 || "").effectiveness || 0;
   };
 
