@@ -16,17 +16,6 @@ export default function Home() {
             <Link href="/meeting"><Button>Start here</Button></Link>
           </CardFooter>
         </Card>
-        <Card>
-          <CardHeader>
-            <Heading size='md'>Mutual Fund App</Heading>
-          </CardHeader>
-          <CardBody>
-            <Text>Mutual fund list with search and details</Text>
-          </CardBody>
-          <CardFooter>
-            <Link href="/mutualfund"><Button>Start here</Button></Link>
-          </CardFooter>
-        </Card>
       </SimpleGrid>
     </main>
   )
